@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="177dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="73dp"
+            android:scaleType="center"
+            android:src="@drawable/mine"
+            android:text="我的钱包" />
+    </RelativeLayout>
+
+    <View  android:layout_height="1px"
+        android:layout_width="match_parent"
+        android:background="#ffffff"/>
+
+    <TextView
+        android:id="@+id/mybook"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text=" 我的预约"
+        android:drawableLeft="@mipmap/dingdan1"
+        android:textSize="25sp"
+        android:gravity="center_vertical"/>
+
+
+    <TextView
+        android:id="@+id/mywallet"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text=" 我的钱包"
+        android:textSize="25sp"
+        android:drawableLeft="@mipmap/qianbao"
+        android:gravity="center_vertical"/>
+
+
+    <TextView
+        android:id="@+id/introduct"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text=" 操作说明"
+        android:textSize="25sp"
+        android:drawableLeft="@mipmap/shuoming"
+        android:gravity="center_vertical"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text=" 退出"
+        android:textSize="25sp"
+        android:drawableLeft="@mipmap/tuichu"
+        android:gravity="center_vertical"/>
+
+
+
+
+</LinearLayout>

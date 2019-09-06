@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorGreen">
+        <!--<TextView-->
+            <!--android:id="@+id/shortBookBack"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="0.3"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:text="@string/backArrow"-->
+            <!--android:textSize="30sp"-->
+            <!--android:textColor="#FFFFFF"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:clickable="true" />-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="60dp"
+            android:text="预定车位"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:gravity="center" />
+        <!--<View-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="0.3"/>-->
+        <Button
+            android:visibility="gone"
+            android:id="@+id/change"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:text="变更"
+            android:background="@null"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:drawableRight="@drawable/xiala"
+        android:background="@drawable/biankuang"
+        android:text="综合排序"
+        android:textColor="#AFABAB"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/notify"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="提示：综合考虑路程、价格、堵塞情况等"
+        android:textColor="@color/colorGreen"
+        android:textSize="15sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="推荐停车场"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/park"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="文心一路停车场"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="15dp"/>
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:text="收费标准"
+            android:textSize="16sp"
+            android:gravity="center_vertical"/>
+
+        <Button
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:text="详情"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:textColor="#ffffff"
+            android:background="@drawable/whitebutton"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginRight="10dp"/>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_height="match_parent"
+            android:text="预计所需时间"
+            android:textSize="16sp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="x小时x分"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="15dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:text="车位占用情况"
+            android:textSize="16sp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="10/15"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="15dp"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/road"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:background="@drawable/whitebutton"
+            android:textSize="15sp"
+            android:textColor="#ffffff"
+            android:text="显示路线信息>"/>
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/mapViewBook"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF">
+        <Button
+            android:drawableTop="@drawable/tingche3"
+            android:id="@+id/roadBook1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始导航"
+            android:background="@null"
+            android:textColor="#1890FF"
+            android:alpha="0.8"
+            android:layout_marginLeft="50dp"
+            android:layout_centerVertical="true" />
+
+        <Button
+            android:drawableTop="@drawable/yuyue3"
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消预定"
+            android:background="@null"
+            android:textColor="#1890FF"
+            android:alpha="0.8"
+
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

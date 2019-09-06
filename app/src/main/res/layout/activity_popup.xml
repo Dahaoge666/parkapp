@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/parkingName"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:text="文心一路-停车场"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/select"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/whitebutton"
+            android:text="选择时间"
+            android:textColor="#ffffff"
+            android:textSize="10sp" />
+        <TextView
+            android:id="@+id/parkingCapacity"
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="@color/colorGreen"
+            android:text="总车位：13  剩余车位：10\n当前均价：5元/小时" />
+    </RelativeLayout>
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="停车位预测"/>
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/bar_chart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:paddingRight="15dp" />
+
+
+
+</LinearLayout>

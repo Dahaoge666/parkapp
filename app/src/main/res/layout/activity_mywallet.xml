@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:text="我的钱包"
+        android:textSize="25sp"
+        android:textColor="#000000"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="我的资产"
+        android:textSize="23sp"
+        android:gravity="center_vertical"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="账户余额"
+        android:drawableLeft="@mipmap/yue"
+        android:textSize="15sp"
+        android:gravity="center_vertical"/>
+    <View  android:layout_height="2px"
+        android:layout_width="match_parent"
+        android:background="#051A1414"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="我的积分"
+        android:drawableLeft="@mipmap/jifen"
+        android:textSize="15sp"
+        android:gravity="center_vertical"/>
+    <View  android:layout_height="2px"
+        android:layout_width="match_parent"
+        android:background="#051A1414"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="我的卡券"
+        android:drawableLeft="@mipmap/kaquan"
+        android:textSize="15sp"
+        android:gravity="center_vertical"/>
+    <View  android:layout_height="2px"
+        android:layout_width="match_parent"
+        android:background="#051A1414"/>
+</LinearLayout>

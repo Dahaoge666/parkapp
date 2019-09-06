@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">鸿雁行</string>
+    <string name="user">&#xf007;</string>
+    <string name="backArrow">&#xf060;</string>
+    <string name="txt1">7月5日</string>
+    <string name="title_activity_book1">book1</string>
+    <string name="title_activity_book2">book2</string>
+    <string name="title_activity_mine">mine</string>
+    <string name="title_activity_popup">popup</string>
+</resources>

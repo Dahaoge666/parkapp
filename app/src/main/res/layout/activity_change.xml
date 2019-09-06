@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorGreen">
+        <TextView
+            android:id="@+id/shortBookBack"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/backArrow"
+            android:textSize="30sp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:clickable="true" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:text="变更车位"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center" />
+        <Button
+            android:id="@+id/roadBook1"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:text="导航"
+            android:background="@null"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="停车场"
+            android:textSize="20sp"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="文心一路停车场"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="10dp"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="停车费用"
+            android:textSize="20sp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="5元/小时"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/mapViewBook"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:textColor="#ED72706F"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:text="检测到更符合您需求的 文心一路停车场 ，是否选则变更车位?"
+                android:textSize="20dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:id="@+id/parkingName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="文心一路-停车场"
+                    android:textSize="20dp"/>
+
+                <Button
+                    android:id="@+id/parkingButton"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/whitebutton"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:text="变更"
+                    android:textSize="20sp"
+                    android:textColor="#FFFFFF" />
+                <TextView
+                    android:id="@+id/parkingCapacity"
+                    android:layout_marginTop="35dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/colorGreen"
+                    android:text="总车位：13  剩余车位：10\n当前均价：5元/小时" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
