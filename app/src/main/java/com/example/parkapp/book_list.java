@@ -77,9 +77,9 @@ public class book_list extends Activity {
 
 
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
-        final String name=intent.getExtras().getString("name");
-        final Double latitude=intent.getExtras().getDouble("latitude");
-        final Double longtitude=intent.getExtras().getDouble("longtitude");
+        String name=intent.getStringExtra("name");
+        Double latitude=intent.getDoubleExtra("latitude",'0');
+        Double longtitude=intent.getDoubleExtra("longtitude",'0');
         LatLng atitude = new LatLng(latitude,longtitude);
         SQLiteDatabase db= SQLiteDatabase.openOrCreateDatabase("/data/data/com.example.parkapp/databases/parkingdb.db",null);
         Cursor cursor = db.query("parking",new String[]{"name","longtitude","latitude","capacity"},null,null,null,null,null);
@@ -113,12 +113,12 @@ public class book_list extends Activity {
 
         }
         TextView destination=findViewById(R.id.destination);
-        destination.setText(name);
+        destination.setText("   "+name);
+//更改预定地名
 
-
-        lists.add("综合排序");
-        lists.add("价格优先");
-        lists.add("距离优先");
+        lists.add("Comprehensive ranking");
+        lists.add("Price first");
+        lists.add("Distance first");
         mListPop = new ListPopupWindow(this);
         mListPop.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lists));
         final Button select = findViewById(R.id.select);
@@ -132,7 +132,7 @@ public class book_list extends Activity {
                                     int position, long id) {
                 select.setText(lists.get(position));
 
-                if (lists.get(position)=="距离优先"){
+                if (lists.get(position)=="Distance first"){
                     getList();
                 }
                 mListPop.dismiss();
@@ -214,7 +214,8 @@ public class book_list extends Activity {
         if (dbNum==0){return;}
         if (dbNum>0){
             TextView parkingName1=findViewById(R.id.parkingName1);
-            parkingName1.setText(dbData.get(0).get(0)+"停车场");
+            parkingName1.setText(dbData.get(0).get(0));
+//            parkingName1.setText(dbData.get(0).get(0)+"停车场");
 //            TextView parkingCapacity1=findViewById(R.id.parkingCapacity1);
 //            parkingCapacity1.setText("推荐指数："+dbData.get(0).get(3)+"  距离："+dbData.get(0).get(4)+"米\n当前均价：5元/小时");
 //            parkingCapacity1.setText("总车位："+dbData.get(0).get(3)+"  距离："+dbData.get(0).get(4)+"米\n当前均价：5元/小时");
@@ -232,7 +233,7 @@ public class book_list extends Activity {
         if (dbNum>1) {
             TextView parkingName2 = findViewById(R.id.parkingName2);
 //            TextView parkingCapacity2 = findViewById(R.id.parkingCapacity2);
-            parkingName2.setText(dbData.get(1).get(0) + "停车场");
+            parkingName2.setText(dbData.get(1).get(0));
 //            parkingCapacity2.setText("总车位：" + dbData.get(1).get(3) + "  距离：" + dbData.get(1).get(4) + "米\n当前均价：5元/小时");
             LinearLayout linear2 =findViewById(R.id.linear2);
             linear2.setVisibility(View.VISIBLE);
@@ -248,7 +249,7 @@ public class book_list extends Activity {
         if (dbNum>2) {
             TextView parkingName3 = findViewById(R.id.parkingName3);
 //            TextView parkingCapacity3 = findViewById(R.id.parkingCapacity3);
-            parkingName3.setText(dbData.get(2).get(0) + "停车场");
+            parkingName3.setText(dbData.get(2).get(0));
 //            parkingCapacity3.setText("总车位：" + dbData.get(2).get(3) + "  距离：" + dbData.get(2).get(4) + "米\n当前均价：5元/小时");
             LinearLayout linear3 =findViewById(R.id.linear3);
             linear3.setVisibility(View.VISIBLE);

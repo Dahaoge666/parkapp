@@ -6,9 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorGreen"
-        android:text="长期预约"
-        android:textSize="20sp"
-        android:textColor="#FFFFFF"
+        android:text="Recommended streets"
+        android:textSize="30sp"
+        android:textColor="#000000"
         android:gravity="center" />
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,10 +32,11 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="20dp"
-            android:text="深圳市南山区海印长城"
+            android:text="   深圳市南山区海印长城"
             android:background="@drawable/rectangle"
             android:gravity="center_vertical"
-            android:textSize="15sp" /> </LinearLayout>
+            android:textSize="20sp"
+            android:textColor="#000000"/> </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,7 +64,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="20dp"
             android:drawableRight="@drawable/xiala"
-            android:text="   综合排序"
+            android:text="   Comprehensive ranking"
+            android:textSize="20sp"
             android:gravity="center_vertical"
             android:background="@drawable/rectangle"
              />
@@ -87,7 +89,7 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/whitebutton"
         android:text="预约时间"
-        android:textColor="#ffffff"/>
+        android:textColor="#000000"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
@@ -104,7 +106,8 @@
             android:layout_height="35dp"
             android:layout_marginLeft="5dp"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="20sp"
+            android:textColor="#000000"/>
         <!--<TextView-->
             <!--android:id="@+id/parkingCapacity1"-->
             <!--android:layout_marginTop="35dp"-->
@@ -121,9 +124,10 @@
             android:layout_height="45dp">
             <TextView
                 android:layout_width="wrap_content"
-                android:text="推荐指数"
+                android:text="Index"
                 android:layout_height="match_parent"
-                android:textSize="15sp"
+                android:textSize="20sp"
+                android:textColor="#000000"
                 android:gravity="center"/>
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                 android:layout_width="wrap_content"
@@ -140,13 +144,13 @@
         <Button
             android:id="@+id/parking1"
             android:visibility="gone"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:text="详情"
+            android:text="Details"
             android:background="@drawable/whitebutton"
-            android:textColor="#ffffff"
+            android:textColor="#000000"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
@@ -164,7 +168,8 @@
             android:layout_height="35dp"
             android:layout_marginLeft="5dp"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="20sp"
+            android:textColor="#000000"/>
         <LinearLayout
             android:id="@+id/linear2"
             android:visibility="gone"
@@ -173,10 +178,11 @@
             android:layout_height="45dp">
             <TextView
                 android:layout_width="wrap_content"
-                android:text="推荐指数"
+                android:text="Index"
                 android:layout_height="match_parent"
-                android:textSize="15sp"
-                android:gravity="center"/>
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="#000000"/>
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -211,13 +217,13 @@
         <Button
             android:id="@+id/parking2"
             android:visibility="gone"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:text="详情"
+            android:text="Details"
             android:background="@drawable/whitebutton"
-            android:textColor="#ffffff"
+            android:textColor="#000000"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
     <View
@@ -236,7 +242,8 @@
             android:layout_height="35dp"
             android:layout_marginLeft="5dp"
             android:text=""
-            android:textSize="20dp"/>
+            android:textSize="20sp"
+            android:textColor="#000000"/>
 
         <!--<Button-->
             <!--android:drawableTop="@drawable/yuyue3"-->
@@ -269,8 +276,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="推荐指数"
-                android:textSize="15sp" />
+                android:text="Index"
+                android:textSize="20sp"
+                android:textColor="#000000"/>
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -285,13 +293,13 @@
         <Button
             android:id="@+id/parking3"
             android:visibility="gone"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:text="详情"
+            android:text="Details"
             android:background="@drawable/whitebutton"
-            android:textColor="#ffffff"
+            android:textColor="#000000"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 

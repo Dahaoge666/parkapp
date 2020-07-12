@@ -15,34 +15,37 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginLeft="5dp"
-            android:text="文心一路-停车场"
-            android:textSize="20dp"/>
+            android:text="文心一路"
+            android:textColor="#000000"
+            android:textSize="20sp"/>
 
         <Button
             android:id="@+id/select"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/whitebutton"
-            android:text="选择时间"
+            android:background="#ffffff"
+            android:text=""
             android:textColor="#ffffff"
-            android:textSize="10sp" />
+            android:textSize="15sp" />
         <TextView
             android:id="@+id/parkingCapacity"
             android:layout_marginTop="35dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:textColor="@color/colorGreen"
-            android:text="总车位：13  剩余车位：10\n当前均价：5元/小时" />
+            android:text="Total:13      Remaining:11"
+            android:textColor="#000000"
+            android:textSize="20sp"/>
     </RelativeLayout>
     <TextView
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:text="停车位预测"/>
+        android:text="Parking availability prediction"
+        android:textColor="#000000"
+        android:textSize="20sp"/>
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/bar_chart"
         android:layout_width="match_parent"

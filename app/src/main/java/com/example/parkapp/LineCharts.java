@@ -1,6 +1,10 @@
 package com.example.parkapp;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -13,7 +17,11 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class LineCharts {
     /**
@@ -49,8 +57,9 @@ public class LineCharts {
         Legend mLegend = mLineChart.getLegend();
         mLegend.setPosition(LegendPosition.BELOW_CHART_CENTER);
         mLegend.setForm(LegendForm.LINE);// 样式
-        mLegend.setFormSize(18.0f);// 字体
-        mLegend.setTextColor(Color.parseColor("#DEAD26"));// 颜色
+        mLegend.setFormSize(20f);// 字体
+        mLegend.setTextSize(20f);//设置文字大小
+        mLegend.setTextColor(Color.parseColor("#000000"));// 颜色
         // 沿x轴动画，时间2000毫秒。
         mLineChart.animateX(1000);
         mLineChart.getAxisRight().setEnabled(false); // 隐藏右边 的坐标轴(true不隐藏)
@@ -60,6 +69,7 @@ public class LineCharts {
         // 隐藏右边坐标轴横网格线
         mLineChart.getAxisRight().setDrawGridLines(false);
         // 隐藏X轴竖网格线
+
         // mLineChart.getXAxis().setDrawGridLines(false);
         // enable / disable grid lines
         // mLineChart.setDrawVerticalGrid(false); // 是否显示水平的表格线
@@ -70,25 +80,36 @@ public class LineCharts {
      *            数据点的数量。
      * @return
      */
-    public LineData getLineData(int count,int hour,int min,int num) {
+    public LineData getLineData(int count, String name,Date date , int hour, int min, int num) {
         // ArrayList<String> x = new ArrayList<String>();
         // for (int i = 0; i < count; i++) {
         // // x轴显示的数据
         // x.add("周" + i);
         // }
-
+        SQLiteDatabase db= SQLiteDatabase.openOrCreateDatabase("/data/data/com.example.parkapp/databases/parkingdb.db",null);
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        String time;
         // y轴的数据
         ArrayList<Entry> y_use = new ArrayList<Entry>();
+        Date d=date;
+        time = ft.format(d);
+        Log.d("timeData", time);
+        for (int i = 0; i < 13; i++) {
+            time = ft.format(d);
+            d = new Date(d.getTime()-5 * 60 * 1000);
+            Cursor cursor = db.rawQuery("SELECT count(*) FROM occupancy_list where in_time < ? and out_time >? and section = ?",new String[]{time,time,name});
 
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * num);
-            Entry entry = new Entry(val, i);
-            y_use.add(entry);
+            while (cursor.moveToNext()){
+                int val=cursor.getInt(0);
+                Log.d("timeData", cursor.getInt(0)+"");
+                Entry entry = new Entry(val, i);
+                y_use.add(entry);
+            }
         }
 
         // y轴数据集
-        LineDataSet mLineDataSet_use = new LineDataSet(y_use, "剩余车位数");
-
+        LineDataSet mLineDataSet_use = new LineDataSet(y_use, "Num of vacant spots");
+        mLineDataSet_use.setCircleColor(Color.parseColor("#00C0BF"));
         // 折线的颜色
         mLineDataSet_use.setColor(Color.parseColor("#00C0BF"));
         //这里需要调用后面的折线样式设置
@@ -157,92 +178,20 @@ public class LineCharts {
      */
     public ArrayList<String> getXAxisValues(int hour,int min) {
         ArrayList<String> xAxis = new ArrayList<String>();
-        if (min <10) {
-            if ((hour -3) < 0){
-                xAxis.add(String.valueOf(hour - 3 + 24) + ":0" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour - 3) + ":0" + String.valueOf(min));
-            }
-            if ((hour -2) < 0){
-                xAxis.add(String.valueOf(hour - 2 + 24) + ":0" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour - 2) + ":0" + String.valueOf(min));
-            }
-            if ((hour -1) < 0){
-                xAxis.add(String.valueOf(hour - 1 + 24) + ":0" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour - 1) + ":0" + String.valueOf(min));
-            }
-
-            xAxis.add(String.valueOf(hour) + ":0" + String.valueOf(min));
-
-            if ((hour + 1) > 24){
-                xAxis.add(String.valueOf(hour + 1 - 24) + ":0" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour + 1) + ":0" + String.valueOf(min));
-            }
-            if ((hour + 2) > 24){
-                xAxis.add(String.valueOf(hour + 2 - 24) + ":0" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour + 2) + ":0" + String.valueOf(min));
-            }
-            if ((hour + 3) > 24){
-                xAxis.add(String.valueOf(hour + 3 - 24) + ":0" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour + 3) + ":0" + String.valueOf(min));
-            }
-
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR_OF_DAY,hour);
+        time.set(Calendar.MINUTE,min);
+        xAxis.add(time.get(Calendar.HOUR)+":"+String.format("%02d",time.get(Calendar.MINUTE)));
+        int i = 0;
+        for(;i<12;i++){
+            time.add(Calendar.MINUTE,5);
+            xAxis.add(time.get(Calendar.HOUR)+":"+String.format("%02d",time.get(Calendar.MINUTE)));
         }
-        else{
-            if ((hour -3) < 0){
-                xAxis.add(String.valueOf(hour - 3 + 24) + ":" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour - 3) + ":" + String.valueOf(min));
-            }
-            if ((hour -2) < 0){
-                xAxis.add(String.valueOf(hour - 2 + 24) + ":" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour - 2) + ":" + String.valueOf(min));
-            }
-            if ((hour -1) < 0){
-                xAxis.add(String.valueOf(hour - 1 + 24) + ":" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour - 1) + ":" + String.valueOf(min));
-            }
 
-            xAxis.add(String.valueOf(hour) + ":" + String.valueOf(min));
-
-            if ((hour + 1) < 24){
-                xAxis.add(String.valueOf(hour + 1) + ":" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour + 1 - 24) + ":" + String.valueOf(min));
-            }
-            if ((hour + 2) < 24){
-                xAxis.add(String.valueOf(hour + 2) + ":" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour + 2 - 24) + ":" + String.valueOf(min));
-            }
-            if ((hour + 3) < 24){
-                xAxis.add(String.valueOf(hour + 3) + ":" + String.valueOf(min));
-            }
-            else {
-                xAxis.add(String.valueOf(hour + 3 - 24) + ":" + String.valueOf(min));
-            }
-
-        }
         return xAxis;
     }
+
+
 }
 
 

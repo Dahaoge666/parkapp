@@ -335,7 +335,7 @@ public class book1 extends AppCompatActivity {
                             builder.target(position);
                             mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
                             TextView park = findViewById(R.id.park);
-                            park.setText("文心二路停车场");
+                            park.setText("文心二路");
                         }
                         break;
                     case Dialog.BUTTON_NEUTRAL://综合
@@ -359,7 +359,7 @@ public class book1 extends AppCompatActivity {
     private void initNotify(){
         Log.d("notify", "initNotify: ");
         String id = "8.0";
-        String name="鸿雁行";
+        String name="提示";
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -367,7 +367,8 @@ public class book1 extends AppCompatActivity {
             notificationManager.createNotificationChannel(mChannel);
             notification = new Notification.Builder(this)
                     .setChannelId(id)
-                    .setContentText("检测到更优车位 文心二路，请打开app查看。")
+                    .setContentTitle("Better parking spot is detected: 文心一路")
+//                    .setContentText("Better parking spot is detected: 文心一路")
                     .setAutoCancel(true)
                     .setSmallIcon(R.drawable.hongyan).build();
         } else {
@@ -376,7 +377,13 @@ public class book1 extends AppCompatActivity {
             builder.setSmallIcon(R.drawable.hongyan);
             builder.setAutoCancel(true);
 
-            builder.setContentText("检测到更优车位 文心二路，请打开app查看。");
+
+
+
+
+
+            builder.setContentTitle("Better parking spot is detected: 文心一路");
+//            .setContentText("Better parking spot is detected: 文心一路");
 
             notification = builder.build();
         }

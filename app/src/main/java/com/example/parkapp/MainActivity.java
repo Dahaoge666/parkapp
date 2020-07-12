@@ -163,8 +163,8 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
                     return;
                 }
-
                 if (res.error == SearchResult.ERRORNO.NO_ERROR) {
+
                     k=true;
                     allAddr = res.getAllPoi();
                     for (PoiInfo p: allAddr) {
@@ -287,7 +287,7 @@ public class MainActivity extends Activity {
                 EditText search = findViewById(R.id.search);
                 Log.d("search", "onClick: "+search.getText().toString());
                 if (TextUtils.isEmpty(search.getText())){
-                    Toast.makeText(getApplicationContext(),"请输入目的地",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please enter your destination",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent intent = new Intent(MainActivity.this, book1.class);
@@ -303,7 +303,7 @@ public class MainActivity extends Activity {
                 EditText search = findViewById(R.id.search);
                 Log.d("search", "onClick: "+search.getText().toString());
                 if (TextUtils.isEmpty(search.getText())){
-                    Toast.makeText(getApplicationContext(),"请输入目的地",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please enter your destination",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent intent = new Intent(MainActivity.this, book_list.class);
@@ -348,7 +348,7 @@ public class MainActivity extends Activity {
                 RelativeLayout parkingSelect = findViewById(R.id.parkingSelect);
                 parkingSelect.setVisibility(View.VISIBLE);
                 mPoiSearch.searchInCity(new PoiCitySearchOption()
-                        .keyword(lists.get(position).toString())
+                        .keyword(lists.get(position))
                         .city("深圳"));
                 mListPop.dismiss();
                 switch (position){
@@ -374,7 +374,7 @@ public class MainActivity extends Activity {
     }
 
 
-    private void markSingleHandler(){
+    public void markSingleHandler(){
         if(m_hour<10){
             text_hour="0"+m_hour;
         }else {
@@ -387,7 +387,7 @@ public class MainActivity extends Activity {
         }
         int month_true=m_month+1;
         String time = 2018+"/"+month_true+"/"+m_day+" "+text_hour+":"+text_minute+":00";
-        Log.d("time", "onTimeSet: "+time);
+//        Toast.makeText(MainActivity.this,time+"",Toast.LENGTH_LONG).show();
         Cursor cursor1 = db.rawQuery("SELECT section,count(*) FROM occupancy_list where in_time < ? and out_time >? group by section",new String[]{time,time});
 
         Cursor cursor = db.query("parking",new String[]{"name","longtitude","latitude","capacity"},null,null,null,null,null);
@@ -402,7 +402,10 @@ public class MainActivity extends Activity {
             final int capacity=cursor.getInt(capacityindexindex);
             markSingle(latitude,longtitude,name,capacity,"little",0);
         }
+
+//        Toast.makeText(MainActivity.this,cursor1.moveToFirst()+"",Toast.LENGTH_LONG).show();
         while (cursor1.moveToNext()) {
+
             Log.d("place"+cursor1.getString(0), cursor1.getString(1) + "");
             Cursor cursor2 = db.rawQuery("SELECT name,longtitude,latitude,capacity FROM parking where name = ?", new String[]{cursor1.getString(0)});
 ////                            Cursor cursor = db.query("parking", new String[]{"name", "longtitude", "latitude", "capacity"}, "name=", nameSearch, null, null, null);
@@ -426,6 +429,7 @@ public class MainActivity extends Activity {
     }
     //标记函数
     private void markSingle(double latitude,double longtitude,String name,Integer capacity,String Info,Integer occupation) {    //地图标注
+
         LatLng point = new LatLng(latitude, longtitude);
         BitmapDescriptor bitmap_much = BitmapDescriptorFactory.fromResource(R.drawable.red);
         BitmapDescriptor bitmap_middle = BitmapDescriptorFactory.fromResource(R.drawable.yellow);
@@ -461,7 +465,7 @@ public class MainActivity extends Activity {
                     .extraInfo(mBundle);
         }
         OverlayOptions textOption = new TextOptions()
-                .text("容量"+capacity+" 占用"+occupation)
+                .text(occupation+"/"+capacity+"")
                 .bgColor(0xFF1890FF)
                 .fontSize(30)
                 .fontColor(0xAAFFFFFF)
@@ -485,8 +489,9 @@ public class MainActivity extends Activity {
 
         TextView parkingName=popupWindow.getContentView().findViewById(R.id.parkingName);
         TextView parkingCapacity=popupWindow.getContentView().findViewById(R.id.parkingCapacity);
-        parkingName.setText(name+"-停车场");
-        parkingCapacity.setText("总车位："+capacity+"  剩余车位：10\n当前均价：5元/小时");
+        parkingName.setText(name);
+//        parkingName.setText(name+"-停车场");
+        parkingCapacity.setText("Total："+capacity+"        Remaining：11");
 
 //默认折线图,即直接调用下面四句话
         final LineChart chart = (LineChart) popupWindow.getContentView().findViewById(R.id.bar_chart); //获取画布
@@ -494,7 +499,9 @@ public class MainActivity extends Activity {
         Calendar cal=Calendar.getInstance();
         int h=cal.get(Calendar.HOUR_OF_DAY);
         int mi=cal.get(Calendar.MINUTE);
-        LineData mLineData = lineCharts.getLineData(7,h,mi,capacity); //初始化折线图数据
+        Date date=cal.getTime();
+//        LineData mLineData = lineCharts.getLineData(7,h,mi,capacity); //初始化折线图数据
+        LineData mLineData = lineCharts.getLineData(11,"文心二路",date,h,mi,capacity); //初始化折线图数据，数据有几个
         chart.setData(mLineData); //显示数据
         //修改时间事件响应
         final Button select=popupWindow.getContentView().findViewById(R.id.select);
@@ -508,6 +515,9 @@ public class MainActivity extends Activity {
                         select.setText(getTime(date));
                         String time = getTime(date);
                         String [] arr = time.split(" ");
+
+
+
                         //重画下面的折线图
                         LineCharts lineCharts = new LineCharts(chart);
                         //传入输入的时间参数
@@ -515,15 +525,17 @@ public class MainActivity extends Activity {
                         //时间字符串分割
                         String[] sArray = arr[1].split(":");
 
-                        LineData mLineData = lineCharts.getLineData(7,
+                        LineData mLineData = lineCharts.getLineData(11,//更新后有几个
+                                name,
+                                date,
                                 Integer.parseInt(sArray[0]),
                                 Integer.parseInt(sArray[1]),capacity); //字符串转化为int
                         chart.setData(mLineData);
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
-                        m_hour=calendar.get(Calendar.HOUR);
-                        m_hour=calendar.get(Calendar.MINUTE);
+                        m_hour=calendar.get(Calendar.HOUR_OF_DAY);
+                        m_minute=calendar.get(Calendar.MINUTE);
                         m_month =calendar.get(Calendar.MONTH);
                         m_day = calendar.get(Calendar.DATE);
                         if(m_hour<10){
@@ -543,7 +555,7 @@ public class MainActivity extends Activity {
                 })
                         .setType(new boolean[]{true, true, true, true, true, false})
                         .setDate(Calendar.getInstance())
-                        .setLabel("年", "月", "日", "时", "分", "")//默认设置为年月日时分秒
+                        .setLabel("-", "-", "  ", ":", "", "")//默认设置为年月日时分秒
                         .setSubmitText("确定")//确定按钮文字
                         .setCancelText("取消")//取消按钮文字
                         .setTitleText("请选择")//标题
