@@ -21,18 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ListPopupWindow;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.RequiresApi;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -70,7 +59,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 
 public class MainActivity extends Activity {
     private MapView mMapView = null;
@@ -128,6 +116,20 @@ public class MainActivity extends Activity {
             text_minute=""+m_minute;
         }
         text2.setText(text_hour + ":" + text_minute);
+
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                OkHttp http = new OkHttp();
+                try {
+                    String get = http.run("http://mock-api.com/NnQ0W5gY.mock/park_data");
+                    Log.d("ceshi", get);
+                }catch(IOException e) {
+                    Log.e("ceshi",e.toString());
+                }
+            }
+        }).start();
+
     }
 
     //初始化
@@ -679,43 +681,6 @@ public class MainActivity extends Activity {
 
         }
     }
-
-
-
-//    public class XAxisValueFormatter implements IAxisValueFormatter {
-//
-//        private final String[] mLabels;
-//        public XAxisValueFormatter(String[] labels) {
-//            mLabels = labels;
-//        }
-//        @Override
-//        public String getFormattedValue(float value, AxisBase axis) {
-//            try {
-//                if ((int)value<0){return "";}
-//                return mLabels[(int) value];
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return mLabels[0];
-//            }
-//        }
-//    }
-//
-//
-//    public class PercentageAxisValueFormatter implements IAxisValueFormatter {
-//
-//        private DecimalFormat mFormat;
-//
-//        @RequiresApi(api = Build.VERSION_CODES.N)
-//        public PercentageAxisValueFormatter(){
-//            mFormat = new DecimalFormat("0.0");
-//        }
-//
-//        @RequiresApi(api = Build.VERSION_CODES.N)
-//        @Override
-//        public String getFormattedValue(float value, AxisBase axis) {
-//            return mFormat.format(value * 100) + "%";
-//        }
-//    }
 
     private String getTime(Date date){//可根据需要自行截取数据显示
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
