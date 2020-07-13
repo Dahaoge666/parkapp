@@ -1,9 +1,5 @@
 package com.example.parkapp;
 
-import android.util.Log;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 
 import okhttp3.*;
