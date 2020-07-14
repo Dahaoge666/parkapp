@@ -51,8 +51,12 @@ import com.baidu.mapapi.search.poi.PoiSearch;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.example.parkapp.Bean.GetBean;
+import com.example.parkapp.Bean.PredictBean;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -222,12 +226,32 @@ public class MainActivity extends Activity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public boolean onMarkerClick(Marker marker) {
-                String name = marker.getExtraInfo().getString("name");
-                int capacity = marker.getExtraInfo().getInt("capacity");
-                double latitude = marker.getExtraInfo().getDouble("latitude");
-                double longtitude = marker.getExtraInfo().getDouble("longtitude");
+
+                final String name = marker.getExtraInfo().getString("name");
+                final Object[] predictData = new Object[10];
+                //弹出框api
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        OkHttp http = new OkHttp();
+                        GsonUtils gsonUtils = new GsonUtils();
+                        try {
+                            String responseData = http.run("http://mock-api.com/NnQ0W5gY.mock/predict?name=" + name);
+                            PredictBean predictBean = gsonUtils.parserJsonToPredictData(responseData);
+                            predictData[0] = predictBean.getCapacity();
+                            predictData[1] = predictBean.getOccupy();
+                            predictData[2] = predictBean.getRemain();
+                            predictData[3] = predictBean.getAtitude();
+                            predictData[4] = predictBean.getPredict();
+                        }catch(IOException e) {
+                            Log.e("ceshi",e.toString());
+                        }
+                    }
+                }).start();
+
+                String[] atitude = predictData[3].toString().split("，");
                 if (name!=""){
-                showPopupWindow(name,latitude,longtitude,capacity);}
+                showPopupWindow(name,Double.valueOf(atitude[0]),Double.valueOf(atitude[1]),Integer.parseInt(predictData[0].toString()),Integer.parseInt(predictData[1].toString()),Integer.parseInt(predictData[2].toString()),predictData[4]);}
                 return false;
             }
         });
@@ -482,111 +506,120 @@ public class MainActivity extends Activity {
     }
     //弹出框函数
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void showPopupWindow(final String name, final double latitude, final double longtitude, final int capacity) {
+    private void showPopupWindow(String name, double latitude, double longtitude, int capacity, int occupy, int remain, Object predict) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View vPopupWindow = inflater.inflate(R.layout.activity_popup, null, false);
         PopupWindow popupWindow = new PopupWindow(vPopupWindow, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
         View parentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_popup, null);
         popupWindow.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
 
+
         TextView parkingName=popupWindow.getContentView().findViewById(R.id.parkingName);
         TextView parkingCapacity=popupWindow.getContentView().findViewById(R.id.parkingCapacity);
         parkingName.setText(name);
-//        parkingName.setText(name+"-停车场");
         parkingCapacity.setText("Total："+capacity+"        Remaining：11");
 
-//默认折线图,即直接调用下面四句话
+        //默认折线图,即直接调用下面四句话
         final LineChart chart = (LineChart) popupWindow.getContentView().findViewById(R.id.bar_chart); //获取画布
         final LineCharts lineCharts = new LineCharts(chart); //创建折线图对象
         Calendar cal=Calendar.getInstance();
-        int h=cal.get(Calendar.HOUR_OF_DAY);
-        int mi=cal.get(Calendar.MINUTE);
+        int hour=cal.get(Calendar.HOUR_OF_DAY);
+        int minute=cal.get(Calendar.MINUTE);
         Date date=cal.getTime();
-//        LineData mLineData = lineCharts.getLineData(7,h,mi,capacity); //初始化折线图数据
-        LineData mLineData = lineCharts.getLineData(11,"文心二路",date,h,mi,capacity); //初始化折线图数据，数据有几个
+        LineData mLineData = lineCharts.getLineData(11,name,date,hour,minute,capacity); //初始化折线图数据，数据有几个
         chart.setData(mLineData); //显示数据
-        //修改时间事件响应
-        final Button select=popupWindow.getContentView().findViewById(R.id.select);
-        select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //时间选择器
-                TimePickerView pvTime = new TimePickerBuilder(MainActivity.this, new OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(Date date, View v) {//选中事件回调
-                        select.setText(getTime(date));
-                        String time = getTime(date);
-                        String [] arr = time.split(" ");
+
+//        //修改时间事件响应
+//        final Button select=popupWindow.getContentView().findViewById(R.id.select);
+//        select.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //时间选择器
+//                TimePickerView pvTime = new TimePickerBuilder(MainActivity.this, new OnTimeSelectListener() {
+//                    @Override
+//                    public void onTimeSelect(Date date, View v) {//选中事件回调
+//                        select.setText(getTime(date));
+//                        String time = getTime(date);
+//                        String [] arr = time.split(" ");
+//
+//                        //重画下面的折线图
+//                        LineCharts lineCharts = new LineCharts(chart);
+//                        //传入输入的时间参数
+////                        String time = select.getText().toString();//例如9：30
+//                        //时间字符串分割
+//                        String[] sArray = arr[1].split(":");
+//
+//                        LineData mLineData = lineCharts.getLineData(11,//更新后有几个
+//                                name,
+//                                date,
+//                                Integer.parseInt(sArray[0]),
+//                                Integer.parseInt(sArray[1]),capacity); //字符串转化为int
+//                        chart.setData(mLineData);
+//
+//                        Calendar calendar = Calendar.getInstance();
+//                        calendar.setTime(date);
+//                        m_hour=calendar.get(Calendar.HOUR_OF_DAY);
+//                        m_minute=calendar.get(Calendar.MINUTE);
+//                        m_month =calendar.get(Calendar.MONTH);
+//                        m_day = calendar.get(Calendar.DATE);
+//                        if(m_hour<10){
+//                            text_hour="0"+m_hour;
+//                        }else {
+//                            text_hour=""+m_hour;
+//                        }
+//                        if (m_minute<10){
+//                            text_minute="0"+m_minute;
+//                        }else{
+//                            text_minute=""+m_minute;
+//                        }
+//                        mBaiduMap.clear();
+//                        markSingleHandler();
+//
+//                    }
+//                })
+//                        .setType(new boolean[]{true, true, true, true, true, false})
+//                        .setDate(Calendar.getInstance())
+//                        .setLabel("-", "-", "  ", ":", "", "")//默认设置为年月日时分秒
+//                        .setSubmitText("确定")//确定按钮文字
+//                        .setCancelText("取消")//取消按钮文字
+//                        .setTitleText("请选择")//标题
+//                        .isDialog(true)
+//                        .build();
+//
+//
+//                Dialog mDialog = pvTime.getDialog();
+//                if (mDialog != null) {
+//
+//                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+//                            ViewGroup.LayoutParams.MATCH_PARENT,
+//                            ViewGroup.LayoutParams.WRAP_CONTENT,
+//                            Gravity.BOTTOM);
+//
+//                    params.leftMargin = 0;
+//                    params.rightMargin = 0;
+//                    pvTime.getDialogContainerLayout().setLayoutParams(params);
+//
+//                    Window dialogWindow = mDialog.getWindow();
+//                    if (dialogWindow != null) {
+//                        dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim);//修改动画样式
+//                        dialogWindow.setGravity(Gravity.BOTTOM);//改成Bottom,底部显示
+//                    }
+//                }
+//                // pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+//                pvTime.show();
+//            }
+//        });
+//
+//
 
 
 
-                        //重画下面的折线图
-                        LineCharts lineCharts = new LineCharts(chart);
-                        //传入输入的时间参数
-//                        String time = select.getText().toString();//例如9：30
-                        //时间字符串分割
-                        String[] sArray = arr[1].split(":");
-
-                        LineData mLineData = lineCharts.getLineData(11,//更新后有几个
-                                name,
-                                date,
-                                Integer.parseInt(sArray[0]),
-                                Integer.parseInt(sArray[1]),capacity); //字符串转化为int
-                        chart.setData(mLineData);
-
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(date);
-                        m_hour=calendar.get(Calendar.HOUR_OF_DAY);
-                        m_minute=calendar.get(Calendar.MINUTE);
-                        m_month =calendar.get(Calendar.MONTH);
-                        m_day = calendar.get(Calendar.DATE);
-                        if(m_hour<10){
-                            text_hour="0"+m_hour;
-                        }else {
-                            text_hour=""+m_hour;
-                        }
-                        if (m_minute<10){
-                            text_minute="0"+m_minute;
-                        }else{
-                            text_minute=""+m_minute;
-                        }
-                        mBaiduMap.clear();
-                        markSingleHandler();
-
-                    }
-                })
-                        .setType(new boolean[]{true, true, true, true, true, false})
-                        .setDate(Calendar.getInstance())
-                        .setLabel("-", "-", "  ", ":", "", "")//默认设置为年月日时分秒
-                        .setSubmitText("确定")//确定按钮文字
-                        .setCancelText("取消")//取消按钮文字
-                        .setTitleText("请选择")//标题
-                        .isDialog(true)
-                        .build();
 
 
-                Dialog mDialog = pvTime.getDialog();
-                if (mDialog != null) {
 
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            Gravity.BOTTOM);
 
-                    params.leftMargin = 0;
-                    params.rightMargin = 0;
-                    pvTime.getDialogContainerLayout().setLayoutParams(params);
 
-                    Window dialogWindow = mDialog.getWindow();
-                    if (dialogWindow != null) {
-                        dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim);//修改动画样式
-                        dialogWindow.setGravity(Gravity.BOTTOM);//改成Bottom,底部显示
-                    }
-                }
-                // pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
-                pvTime.show();
-            }
-        });
+
     }
     //权限申请函数
     @Override

@@ -139,7 +139,7 @@
         android:layout_weight="1">
         <Button
             android:drawableTop="@drawable/tingche3"
-            android:id="@+id/shortbook"
+            android:id="@+id/longbook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Normal"
@@ -152,7 +152,7 @@
 
         <Button
             android:drawableTop="@drawable/yuyue3"
-            android:id="@+id/longbook"
+            android:id="@+id/shortbook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reserve"
