@@ -22,9 +22,9 @@ public class GsonUtils {
         return data;
     }
 
-    public static ParkdataBean parserJsonToParkData(String jsonStr) {
+    public static ParkdataBean[] parserJsonToParkData(String jsonStr) {
         Gson gson = new Gson();
-        ParkdataBean data= gson.fromJson(jsonStr, ParkdataBean.class);
+        ParkdataBean[] data = gson.fromJson(jsonStr, ParkdataBean[].class);
         return data;
     }
 

@@ -8,7 +8,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -46,14 +45,13 @@ import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.example.parkapp.Bean.ParkdataBean;
 import com.example.parkapp.Thread.*;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -72,7 +70,6 @@ public class MainActivity extends Activity {
     private boolean isFirstLocation = true;
     public double historyLatitude;
     public double historyLongtitude;
-
     int m_year = c.get(Calendar.YEAR);
     int m_month = c.get(Calendar.MONTH);
     int m_day = c.get(Calendar.DAY_OF_MONTH);
@@ -111,20 +108,6 @@ public class MainActivity extends Activity {
             text_minute=""+m_minute;
         }
         text2.setText(text_hour + ":" + text_minute);
-
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                OkHttp http = new OkHttp();
-                try {
-                    String get = http.run("http://mock-api.com/NnQ0W5gY.mock/park_data");
-                    Log.d("ceshi", get);
-                }catch(IOException e) {
-                    Log.e("ceshi",e.toString());
-                }
-            }
-        }).start();
-
     }
 
     //初始化
@@ -196,6 +179,7 @@ public class MainActivity extends Activity {
         };
         mPoiSearch.setOnGetPoiSearchResultListener(poiListener);
     }
+
     private void initSQL(){
         DataBaseUtil util = new DataBaseUtil(this);
         if (!util.checkDataBase()) {
@@ -206,6 +190,7 @@ public class MainActivity extends Activity {
             }
         }
         db=SQLiteDatabase.openOrCreateDatabase("/data/data/com.example.parkapp/databases/parkingdb.db",null);
+
         markSingleHandler();
         mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -228,6 +213,7 @@ public class MainActivity extends Activity {
             }
         });
     }
+
     private void initEvent() {
         setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
         //font设置
@@ -319,19 +305,11 @@ public class MainActivity extends Activity {
             }
         });
 
-
-
-
-
-
-
         final EditText search = findViewById(R.id.search);
         final List<String> lists = new ArrayList<String>();
         lists.add("文心公园");
         lists.add("深圳大学");
         lists.add("深圳动漫园");
-//        Button history = findViewById(R.id.history);
-
         final ListPopupWindow mListPop = new ListPopupWindow(this);
         mListPop.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lists));
         mListPop.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -362,7 +340,6 @@ public class MainActivity extends Activity {
                 }
             }
         });
-
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -371,59 +348,28 @@ public class MainActivity extends Activity {
         });
     }
 
-
     public void markSingleHandler(){
-        if(m_hour<10){
-            text_hour="0"+m_hour;
-        }else {
-            text_hour=""+m_hour;
-        }
-        if (m_minute<10){
-            text_minute="0"+m_minute;
-        }else{
-            text_minute=""+m_minute;
-        }
-        int month_true=m_month+1;
-        String time = 2018+"/"+month_true+"/"+m_day+" "+text_hour+":"+text_minute+":00";
-//        Toast.makeText(MainActivity.this,time+"",Toast.LENGTH_LONG).show();
-        Cursor cursor1 = db.rawQuery("SELECT section,count(*) FROM occupancy_list where in_time < ? and out_time >? group by section",new String[]{time,time});
-
-        Cursor cursor = db.query("parking",new String[]{"name","longtitude","latitude","capacity"},null,null,null,null,null);
-        while (cursor.moveToNext()){
-            int nameindex=cursor.getColumnIndex("name");
-            final String name=cursor.getString(nameindex);
-            int longtitudeindex=cursor.getColumnIndex("longtitude");
-            double longtitude=cursor.getDouble(longtitudeindex);
-            int latitudeindex=cursor.getColumnIndex("latitude");
-            double latitude=cursor.getDouble(latitudeindex);
-            int capacityindexindex=cursor.getColumnIndex("capacity");
-            final int capacity=cursor.getInt(capacityindexindex);
-            markSingle(latitude,longtitude,name,capacity,"little",0);
+        ParkDataThread parkDataThread = new ParkDataThread();
+        try {
+            parkDataThread.start();
+            parkDataThread.join();
+        } catch (Exception e) {
+            System.out.println("Exception from main");
         }
 
-//        Toast.makeText(MainActivity.this,cursor1.moveToFirst()+"",Toast.LENGTH_LONG).show();
-        while (cursor1.moveToNext()) {
-
-            Log.d("place"+cursor1.getString(0), cursor1.getString(1) + "");
-            Cursor cursor2 = db.rawQuery("SELECT name,longtitude,latitude,capacity FROM parking where name = ?", new String[]{cursor1.getString(0)});
-////                            Cursor cursor = db.query("parking", new String[]{"name", "longtitude", "latitude", "capacity"}, "name=", nameSearch, null, null, null);
-            while (cursor2.moveToNext()) {
-                int nameindex = cursor2.getColumnIndex("name");
-                final String name = cursor2.getString(nameindex);
-                int longtitudeindex = cursor2.getColumnIndex("longtitude");
-                double longtitude = cursor2.getDouble(longtitudeindex);
-                int latitudeindex = cursor2.getColumnIndex("latitude");
-                double latitude = cursor2.getDouble(latitudeindex);
-                int capacityindexindex = cursor2.getColumnIndex("capacity");
-                final int capacity = cursor2.getInt(capacityindexindex);
-                Double info = cursor1.getInt(1)/(capacity+0.0);
-                Log.d("occupy", "onTimeSet: "+info);
-                if(info<0.33){markSingle(latitude,longtitude,name,capacity,"little",cursor1.getInt(1));}
-                else if(info<0.66){markSingle(latitude,longtitude,name,capacity,"middle",cursor1.getInt(1));}
-                else{markSingle(latitude,longtitude,name,capacity,"much",cursor1.getInt(1));}
-            }
+        ParkdataBean[] parkDataBean = parkDataThread.parkDataBean;
+        for (ParkdataBean parkData:parkDataBean){
+            String name = parkData.getName();
+            Double longtitude = Double.valueOf(parkData.getAtitude().split(",")[0]);
+            Double latitude = Double.valueOf(parkData.getAtitude().split(",")[1]);
+            int capacity = parkData.getCapacity();
+            int occupy = parkData.getOccupy();
+            int remain = parkData.getRemain();
+            Double info = Double.valueOf(occupy)/capacity;
+            if(info<0.34){markSingle(latitude,longtitude,name,capacity,"little",occupy);}
+            else if (info<0.67){markSingle(latitude,longtitude,name,capacity,"middle",occupy);}
+            else{markSingle(latitude,longtitude,name,capacity,"much",occupy);}
         }
-
     }
     //标记函数
     private void markSingle(double latitude,double longtitude,String name,Integer capacity,String Info,Integer occupation) {    //地图标注
@@ -432,7 +378,6 @@ public class MainActivity extends Activity {
         BitmapDescriptor bitmap_much = BitmapDescriptorFactory.fromResource(R.drawable.red);
         BitmapDescriptor bitmap_middle = BitmapDescriptorFactory.fromResource(R.drawable.yellow);
         BitmapDescriptor bitmap_little = BitmapDescriptorFactory.fromResource(R.drawable.green);
-
         Bundle mBundle = new Bundle();
         mBundle.putString("name",name);
         mBundle.putDouble("latitude",latitude);
@@ -509,6 +454,9 @@ public class MainActivity extends Activity {
         }
     }
 
+
+
+
     //地图函数
     @Override
     protected void onResume() {
@@ -529,14 +477,12 @@ public class MainActivity extends Activity {
         mPoiSearch.destroy();
         super.onDestroy();
     }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         startActivity(intent);
         super.onBackPressed();
     }
-
     public class MyLocationListener extends BDAbstractLocationListener{
         @Override
         public void onReceiveLocation(BDLocation location){
@@ -589,11 +535,6 @@ public class MainActivity extends Activity {
 
 
         }
-    }
-
-    private String getTime(Date date){//可根据需要自行截取数据显示
-        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
-        return format.format(date);
     }
 }
 

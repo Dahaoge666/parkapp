@@ -20,14 +20,17 @@ public class PredictThread extends Thread {
         GsonUtils gsonUtils = new GsonUtils();
         try {
             String responseData = http.run("http://mock-api.com/NnQ0W5gY.mock/predict");
+
+
+
             PredictBean predictBean = gsonUtils.parserJsonToPredictData(responseData);
             capacity = predictBean.getCapacity();
             occupy = predictBean.getOccupy();
             remain = predictBean.getRemain();
             atitude = predictBean.getAtitude();
             predict = predictBean.getPredict();
-            latitude = Double.valueOf(atitude.split(",")[0]);
-            longtitude = Double.valueOf(atitude.split(",")[1]);
+            latitude = Double.valueOf(atitude.split(",")[1]);
+            longtitude = Double.valueOf(atitude.split(",")[0]);
         }catch(IOException e) {
 
         }
