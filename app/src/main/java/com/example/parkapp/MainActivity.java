@@ -274,9 +274,13 @@ public class MainActivity extends Activity {
                     Toast.makeText(getApplicationContext(),"Please enter your destination",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(MainActivity.this, book1.class);
-                intent.putExtra("latitude",currentLatitude);
-                intent.putExtra("longtitude",currentLongtitude);
+
+                Intent intent = new Intent(MainActivity.this, Reserve.class);
+
+                intent.putExtra("destination",search.getText());
+                intent.putExtra("name","文心二路");
+                intent.putExtra("latitude",22.525269);
+                intent.putExtra("longtitude",113.937374);
                 startActivity(intent);
             }
         });
@@ -290,7 +294,7 @@ public class MainActivity extends Activity {
                     Toast.makeText(getApplicationContext(),"Please enter your destination",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(MainActivity.this, book_list.class);
+                Intent intent = new Intent(MainActivity.this, Normal.class);
                 intent.putExtra("name",historyName);
                 intent.putExtra("latitude",historyLatitude);
                 intent.putExtra("longtitude",historyLongtitude);
@@ -300,7 +304,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.mine).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, mine.class);
+                Intent intent = new Intent(MainActivity.this, Mine.class);
                 startActivity(intent);
             }
         });
@@ -425,9 +429,9 @@ public class MainActivity extends Activity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void showPopupWindow(String name, int capacity, int occupy, int remain, List<Integer> predict) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View vPopupWindow = inflater.inflate(R.layout.activity_popup, null, false);
+        View vPopupWindow = inflater.inflate(R.layout.activity_mainpopupwindow, null, false);
         PopupWindow popupWindow = new PopupWindow(vPopupWindow, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
-        View parentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_popup, null);
+        View parentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_mainpopupwindow, null);
         popupWindow.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
 
 

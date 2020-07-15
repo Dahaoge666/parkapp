@@ -5,10 +5,8 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +19,6 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
@@ -32,31 +29,19 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
-import com.example.parkapp.Bean.NormalBean;
-import com.example.parkapp.Thread.NormalThread;
 import com.example.parkapp.Thread.ReserveThread;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListPopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.log4j.chainsaw.Main;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import overlayutil.DrivingRouteOverlay;
 
-public class book1 extends AppCompatActivity {
+public class Reserve extends AppCompatActivity {
     private TextView shortBookBack;
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
@@ -68,13 +53,14 @@ public class book1 extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book1);
+        setContentView(R.layout.activity_reserve);
 
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
-        final String currentLatitude = intent.getStringExtra("latitude");//从intent对象中获得数据
-        final String currentLongtitude = intent.getStringExtra("longtitude");//从intent对象中获得数据
-
-        ReserveThread reserveThread = new ReserveThread();
+        final Double latitude = intent.getDoubleExtra("latitude",0);
+        final Double longtitude = intent.getDoubleExtra("longtitude",0);
+        final String currentName = intent.getStringExtra("name");
+        final String destination = intent.getStringExtra("destination");
+        final ReserveThread reserveThread = new ReserveThread();
         try {
             reserveThread.start();
             reserveThread.join();
@@ -88,7 +74,7 @@ public class book1 extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
         builder.zoom(16.0f);
-        final LatLng parkPosition = new LatLng(22.524663,113.936272);
+        final LatLng parkPosition = new LatLng(latitude,longtitude);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         final BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -99,16 +85,18 @@ public class book1 extends AppCompatActivity {
                 .icon(bitmap)
                 .alpha(0.8f);
         mBaiduMap.addOverlay(markOption);
-//
-//        TextView travelTime = findViewById(R.id.travelTime);
-//        travelTime.setText(reserveThread.time_use);
-//        TextView parkingOccupancy = findViewById(R.id.parkingOccupancy);
-//        parkingOccupancy.setText(reserveThread.occupy+"/"+reserveThread.capacity);
+
+        TextView travelTime = findViewById(R.id.travelTime);
+        travelTime.setText(reserveThread.time_use);
+        TextView parkingOccupancy = findViewById(R.id.parkingOccupancy);
+        parkingOccupancy.setText(reserveThread.occupy+"/"+reserveThread.capacity);
+        final String price_info = reserveThread.price_info;
         Button info = findViewById(R.id.info);
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent infoIntent = new Intent(book1.this,priceinfo.class);
+                Intent infoIntent = new Intent(Reserve.this,priceinfo.class);
+                infoIntent.putExtra("price_info",price_info);
                 startActivity(infoIntent);
             }
         });
@@ -118,7 +106,7 @@ public class book1 extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i1 = new Intent();
                 j = true;
-                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市文心一路"+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+reserveThread.name+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
                 try {
                     startActivity(i1);
                     initNotify();
@@ -131,14 +119,14 @@ public class book1 extends AppCompatActivity {
                         }
                     });
                 }catch (Exception e){
-                    Toast.makeText(book1.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Reserve.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
             }
         });
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(book1.this,MainActivity.class);
+                Intent intent = new Intent(Reserve.this,MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();
             }
@@ -164,13 +152,9 @@ public class book1 extends AppCompatActivity {
 
             @Override
             public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-                //创建DrivingRouteOverlay实例
                 DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap);
                 if (drivingRouteResult.getRouteLines().size() > 0) {
-                    //获取路径规划数据,(以返回的第一条路线为例）
-                    //为DrivingRouteOverlay实例设置数据
                     overlay.setData(drivingRouteResult.getRouteLines().get(0));
-                    //在地图上绘制DrivingRouteOverlay
                     overlay.addToMap();
                 }
             }
@@ -191,8 +175,8 @@ public class book1 extends AppCompatActivity {
         road.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlanNode stNode = PlanNode.withCityNameAndPlaceName("深圳", "文心一路");
-                PlanNode enNode = PlanNode.withCityNameAndPlaceName("深圳", "文心二路");
+                PlanNode stNode = PlanNode.withCityNameAndPlaceName("深圳", currentName);
+                PlanNode enNode = PlanNode.withCityNameAndPlaceName("深圳", reserveThread.name);
                 try {
                     mSearch.drivingSearch((new DrivingRoutePlanOption())
                             .from(stNode)
@@ -245,7 +229,7 @@ public class book1 extends AppCompatActivity {
                                 try {
                                     startActivity(i2);
                                 }catch(Exception e){
-                                    Toast.makeText(book1.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Reserve.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -276,7 +260,7 @@ public class book1 extends AppCompatActivity {
         };
         //dialog参数设置
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(book1.this);  //先得到构造器
+        AlertDialog.Builder builder = new AlertDialog.Builder(Reserve.this);  //先得到构造器
         builder.setMessage("检测到更优的车位是否变更行程？"); //设置内容
         builder.setTitle("车位变更"); //设置标题
         builder.setIcon(R.drawable.park);//设置图标，图片id即可

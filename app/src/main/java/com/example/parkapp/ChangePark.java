@@ -1,7 +1,5 @@
 package com.example.parkapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -22,7 +20,7 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 
-public class change extends Activity {
+public class ChangePark extends Activity {
     private TextView shortBookBack;
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
@@ -32,7 +30,7 @@ public class change extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book1);
+        setContentView(R.layout.activity_reserve);
 
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         final String currentLatitude = intent.getStringExtra("latitude");//从intent对象中获得数据
@@ -65,7 +63,7 @@ public class change extends Activity {
         shortBookBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(change.this,MainActivity.class);
+                Intent intent = new Intent(ChangePark.this,MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,7 +76,7 @@ public class change extends Activity {
                 try {
                     startActivity(i1);
                 }catch (Exception e){
-                    Toast.makeText(change.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePark.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -91,7 +89,7 @@ public class change extends Activity {
                 try {
                     startActivity(i1);
                 }catch (Exception e){
-                    Toast.makeText(change.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePark.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -1,23 +1,14 @@
 package com.example.parkapp;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 import android.widget.TextView;
 
-public class mine extends AppCompatActivity {
+public class Mine extends AppCompatActivity {
     private TextView mineBack;
 
     @Override
@@ -31,7 +22,7 @@ public class mine extends AppCompatActivity {
         mybook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mine.this,mybook.class);
+                Intent intent = new Intent(Mine.this, Mybook.class);
                 intent.putExtra("name",0);
                 startActivity(intent);
             }
@@ -44,7 +35,7 @@ public class mine extends AppCompatActivity {
         mywallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mine.this,mywallet.class);
+                Intent intent = new Intent(Mine.this, Mywallet.class);
                 startActivity(intent);
             }
         });
@@ -58,13 +49,13 @@ public class mine extends AppCompatActivity {
         introduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i1 = new Intent(mine.this,detail_intro.class);
+                Intent i1 = new Intent(Mine.this, Introduction.class);
                 startActivity(i1);
             }
         });
     }
     public void onBackPressed() {
-        Intent intent = new Intent(mine.this, MainActivity.class);
+        Intent intent = new Intent(Mine.this, MainActivity.class);
         startActivity(intent);
         super.onBackPressed();
     }

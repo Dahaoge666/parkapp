@@ -1,16 +1,12 @@
 package com.example.parkapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-public class mybook extends Activity {
+public class Mybook extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +38,7 @@ public class mybook extends Activity {
         dingdan1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mybook.this,booked.class);
+                Intent intent = new Intent(Mybook.this,booked.class);
                 intent.putExtra("name","文心二路");
                 intent.putExtra("time","2019年9月3日 15:10");
                 intent.putExtra("used","3");
@@ -53,7 +49,7 @@ public class mybook extends Activity {
         dingdan2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mybook.this,bookd_info.class);
+                Intent intent = new Intent(Mybook.this,bookd_info.class);
                 intent.putExtra("name","深圳大学");
                 intent.putExtra("time","2019年9月1日 13:10");
                 intent.putExtra("used","0");
@@ -64,7 +60,7 @@ public class mybook extends Activity {
         dingdan3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mybook.this,booked2.class);
+                Intent intent = new Intent(Mybook.this,booked2.class);
                 intent.putExtra("name","文心公园");
                 intent.putExtra("time","2019年9月3日 13:10");
                 intent.putExtra("used","5");
@@ -75,7 +71,7 @@ public class mybook extends Activity {
         dingdan4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mybook.this,booked2.class);
+                Intent intent = new Intent(Mybook.this,booked2.class);
                 intent.putExtra("name","文心二路");
                 intent.putExtra("time","2019年9月3日 15:10");
                 intent.putExtra("used","3");
@@ -86,7 +82,7 @@ public class mybook extends Activity {
 //        dingdan5.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Intent intent = new Intent(mybook.this,booked2.class);
+//                Intent intent = new Intent(Mybook.this,booked2.class);
 //                intent.putExtra("name","深圳大学");
 //                intent.putExtra("time","2019年9月1日 13:10");
 //                intent.putExtra("used","0");
@@ -97,7 +93,7 @@ public class mybook extends Activity {
     }
 
     public void onBackPressed() {
-        Intent intent = new Intent(mybook.this, mine.class);
+        Intent intent = new Intent(Mybook.this, Mine.class);
         startActivity(intent);
         super.onBackPressed();
     }

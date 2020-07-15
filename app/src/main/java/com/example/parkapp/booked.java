@@ -1,7 +1,5 @@
 package com.example.parkapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class booked extends Activity {
 
@@ -49,7 +46,7 @@ public class booked extends Activity {
                             case Dialog.BUTTON_POSITIVE:
                                 break;
                             case Dialog.BUTTON_NEUTRAL:
-                                Intent intent1 = new Intent(booked.this, mybook.class);
+                                Intent intent1 = new Intent(booked.this, Mybook.class);
                                 intent1.putExtra("name", 1);
                                 startActivity(intent1);
                                 break;

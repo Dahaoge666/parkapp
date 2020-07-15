@@ -6,6 +6,7 @@ import com.example.parkapp.OkHttp;
 import java.io.IOException;
 
 public class ReserveThread extends Thread {
+    public String name;
     public Integer capacity;
     public Integer occupy;
     public Integer remain;
@@ -21,6 +22,7 @@ public class ReserveThread extends Thread {
         try {
             String responseData = http.run("http://mock-api.com/NnQ0W5gY.mock/reserve");
             ReserveBean reserveBean = gsonUtils.parserJsonToReserveData(responseData);
+            name = reserveBean.getName();
             capacity = reserveBean.getCapacity();
             occupy = reserveBean.getOccupy();
             remain = reserveBean.getRemain();

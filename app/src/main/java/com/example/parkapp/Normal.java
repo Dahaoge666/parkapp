@@ -1,43 +1,23 @@
 package com.example.parkapp;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListPopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.utils.DistanceUtil;
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnTimeSelectListener;
-import com.bigkoo.pickerview.view.TimePickerView;
+
 import com.example.parkapp.Bean.NormalBean;
 import com.example.parkapp.Thread.NormalThread;
-import com.example.parkapp.Thread.PredictThread;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-public class book_list extends Activity {
+public class Normal extends Activity {
 //    private ListPopupWindow mListPop;
 //    private List<String> lists = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_list);
+        setContentView(R.layout.activity_normal);
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         String name=intent.getStringExtra("name");
         Double latitude=intent.getDoubleExtra("latitude",'0');
@@ -85,7 +65,7 @@ public class book_list extends Activity {
             System.out.println("Exception from main");
         }
         NormalBean[] normalBean = normalThread.normalBean;
-        Intent intent = new Intent(book_list.this, book2.class);
+        Intent intent = new Intent(Normal.this, NomalDetails.class);
         intent.putExtra("longtitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
         intent.putExtra("latitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[1]));
         intent.putExtra("capacity",normalBean[dataNum].getCapacity());

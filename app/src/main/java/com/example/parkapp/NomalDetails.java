@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -39,7 +37,7 @@ import android.widget.Toast;
 
 import overlayutil.DrivingRouteOverlay;
 
-public class book2 extends AppCompatActivity {
+public class NomalDetails extends AppCompatActivity {
     private TextView longBookBack;
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
@@ -48,7 +46,7 @@ public class book2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book2);
+        setContentView(R.layout.activity_normal_details);
 
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         final String name=intent.getExtras().getString("name");
@@ -83,7 +81,7 @@ public class book2 extends AppCompatActivity {
 ////        longBookBack.setOnClickListener(new View.OnClickListener() {
 ////            @Override
 ////            public void onClick(View view) {
-////                Intent intent = new Intent(book2.this,MainActivity.class);
+////                Intent intent = new Intent(NomalDetails.this,MainActivity.class);
 ////                startActivity(intent);
 ////            }
 ////        });
@@ -100,7 +98,7 @@ public class book2 extends AppCompatActivity {
         findViewById(R.id.info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(book2.this,priceinfo.class);
+                Intent intent = new Intent(NomalDetails.this,priceinfo.class);
                 startActivity(intent);
             }
         });
@@ -116,25 +114,25 @@ public class book2 extends AppCompatActivity {
                         switch (which) {
                             case Dialog.BUTTON_POSITIVE://开始导航
                                 roadBook1.setText("返回主页");
-                                Toast.makeText(book2.this,"预约成功！可前往我的预约中查看订单。",Toast.LENGTH_LONG).show();
+                                Toast.makeText(NomalDetails.this,"预约成功！可前往我的预约中查看订单。",Toast.LENGTH_LONG).show();
 
                                 roadBook1.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent = new Intent(book2.this, MainActivity.class);
+                                        Intent intent = new Intent(NomalDetails.this, MainActivity.class);
                                         startActivity(intent);
                                     }
                                 });
                                 break;
                             case Dialog.BUTTON_NEUTRAL://返回主页
-//                                Intent intent = new Intent(book2.this, MainActivity.class);
+//                                Intent intent = new Intent(NomalDetails.this, MainActivity.class);
 //                                startActivity(intent);
                                 break;
                         }
                     }
                 };
                 //dialog参数设置
-                AlertDialog.Builder builder = new AlertDialog.Builder(book2.this);  //先得到构造器
+                AlertDialog.Builder builder = new AlertDialog.Builder(NomalDetails.this);  //先得到构造器
                 builder.setTitle(name); //设置标题
                 builder.setMessage("即将为您预约"+time+"的停车位，请确认信息。");
                 builder.setIcon(R.drawable.park);//设置图标，图片id即可
@@ -174,7 +172,7 @@ public class book2 extends AppCompatActivity {
             public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
 
                 if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
-                    Toast.makeText(book2.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NomalDetails.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
                 }
                 if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
                     // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息

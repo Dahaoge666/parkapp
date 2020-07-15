@@ -1,18 +1,14 @@
 package com.example.parkapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -75,7 +71,7 @@ public class bookd_info extends Activity {
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent changeIntent=new Intent(bookd_info.this,book_list.class);
+                Intent changeIntent=new Intent(bookd_info.this, Normal.class);
                 changeIntent.putExtra("name","深圳公园");
                 changeIntent.putExtra("latitude",22.53945);
                 changeIntent.putExtra("longtitude",113.942651);
@@ -92,14 +88,14 @@ public class bookd_info extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case Dialog.BUTTON_POSITIVE://再次预定
-                                Intent changeIntent=new Intent(bookd_info.this,book_list.class);
+                                Intent changeIntent=new Intent(bookd_info.this, Normal.class);
                                 changeIntent.putExtra("name","深圳公园");
                                 changeIntent.putExtra("latitude",22.53945);
                                 changeIntent.putExtra("longtitude",113.942651);
                                 startActivity(changeIntent);
                                 break;
                             case Dialog.BUTTON_NEUTRAL://返回主页
-                                Intent intent1 = new Intent(bookd_info.this, mybook.class);
+                                Intent intent1 = new Intent(bookd_info.this, Mybook.class);
                                 intent1.putExtra("name",2);
                                 startActivity(intent1);
                                 break;

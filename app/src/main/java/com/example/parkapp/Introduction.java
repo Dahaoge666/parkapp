@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class detail_intro extends Activity {
+public class Introduction extends Activity {
 
     //定义图片
     private int[] resId = new int[]{
@@ -23,11 +23,11 @@ public class detail_intro extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_intro);
+        setContentView(R.layout.activity_introduction);
 
 
         //显示提示语
-        Toast.makeText(detail_intro.this, "温馨提示：向左或向右滑动查看更多操作", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Introduction.this, "温馨提示：向左或向右滑动查看更多操作", Toast.LENGTH_SHORT).show();
 
         iv = (ImageView)findViewById(R.id.imageView);        //获取ImageView控件id
         gestureDetector = new GestureDetector(onGestureListener);  //设置手势监听由onGestureListener处理

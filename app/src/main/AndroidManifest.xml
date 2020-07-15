@@ -27,30 +27,30 @@
         android:theme="@style/AppTheme"
         android:networkSecurityConfig="@xml/network_security_config">
 
-        <activity android:name=".detail_intro"></activity>
+        <activity android:name=".Introduction"></activity>
         <activity android:name=".booked2" />
         <activity android:name=".bookd_info" />
         <activity android:name=".priceinfo" />
         <activity android:name=".booked" />
-        <activity android:name=".mywallet" />
-        <activity android:name=".mybook" />
-        <activity android:name=".change" />
-        <activity android:name=".book_list" />
+        <activity android:name=".Mywallet" />
+        <activity android:name=".Mybook" />
+        <activity android:name=".ChangePark" />
+        <activity android:name=".Normal" />
         <activity android:name=".searchPopup" />
         <activity
-            android:name=".popup"
+            android:name=".MainActivityPopupWindow"
             android:label="@string/title_activity_popup"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mine"
+            android:name=".Mine"
             android:label="@string/title_activity_mine"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".book2"
+            android:name=".NomalDetails"
             android:label="@string/title_activity_book2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".book1"
+            android:name=".Reserve"
             android:label="@string/title_activity_book1"
             android:theme="@style/AppTheme.NoActionBar" />
 

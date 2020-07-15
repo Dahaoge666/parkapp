@@ -51,7 +51,7 @@ public class booked2 extends Activity {
 //
 //                                break;
 //                            case Dialog.BUTTON_NEUTRAL:
-//                                Intent intent1 = new Intent(booked2.this, mybook.class);
+//                                Intent intent1 = new Intent(booked2.this, Mybook.class);
 //                                intent1.putExtra("name", 3);
 //                                startActivity(intent1);
 //                                break;

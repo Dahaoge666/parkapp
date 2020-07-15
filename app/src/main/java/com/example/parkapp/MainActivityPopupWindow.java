@@ -1,14 +1,12 @@
 package com.example.parkapp;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
-public class searchPopup extends AppCompatActivity {
-
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivityPopupWindow extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_popup);
+        setContentView(R.layout.activity_mainpopupwindow);
+
     }
+
 }
