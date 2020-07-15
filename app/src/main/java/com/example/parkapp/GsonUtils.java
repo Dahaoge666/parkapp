@@ -16,9 +16,9 @@ public class GsonUtils {
         return data;
     }
 
-    public static NormalBean parserJsonToNormalData(String jsonStr) {
+    public static NormalBean[] parserJsonToNormalData(String jsonStr) {
         Gson gson = new Gson();
-        NormalBean data = gson.fromJson(jsonStr, NormalBean.class);
+        NormalBean[] data = gson.fromJson(jsonStr, NormalBean[].class);
         return data;
     }
 
@@ -39,6 +39,4 @@ public class GsonUtils {
         ReserveBean data= gson.fromJson(jsonStr, ReserveBean.class);
         return data;
     }
-
-
 }

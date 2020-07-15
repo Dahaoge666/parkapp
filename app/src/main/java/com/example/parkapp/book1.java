@@ -32,6 +32,9 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.example.parkapp.Bean.NormalBean;
+import com.example.parkapp.Thread.NormalThread;
+import com.example.parkapp.Thread.ReserveThread;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -71,8 +74,13 @@ public class book1 extends AppCompatActivity {
         final String currentLatitude = intent.getStringExtra("latitude");//从intent对象中获得数据
         final String currentLongtitude = intent.getStringExtra("longtitude");//从intent对象中获得数据
 
-
-//        shortBookBack=findViewById(R.id.shortBookBack);
+        ReserveThread reserveThread = new ReserveThread();
+        try {
+            reserveThread.start();
+            reserveThread.join();
+        } catch (Exception e) {
+            System.out.println("Exception from main");
+        }
         //获取地图控件引用
         mMapView = findViewById(R.id.mapViewBook);
         mBaiduMap = mMapView.getMap();
@@ -91,39 +99,11 @@ public class book1 extends AppCompatActivity {
                 .icon(bitmap)
                 .alpha(0.8f);
         mBaiduMap.addOverlay(markOption);
-
-        findViewById(R.id.change).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(j) {
-                    i = true;
-                    mBaiduMap.clear();
-                    LatLng position = new LatLng(22.525269, 113.937374);
-                    OverlayOptions markOption = new MarkerOptions()
-                            .position(position)
-                            .perspective(true)
-                            .icon(bitmap)
-                            .alpha(0.8f);
-                    mBaiduMap.addOverlay(markOption);
-                    builder = new MapStatus.Builder();
-                    builder.zoom(20.0f);
-                    builder.target(position);
-                    mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-                    TextView park = findViewById(R.id.park);
-                    park.setText("文心二路停车场");
-                }
-            }
-        });
-//        Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
-//        shortBookBack.setTypeface(font);
-//        shortBookBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(book1.this,MainActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
+//
+//        TextView travelTime = findViewById(R.id.travelTime);
+//        travelTime.setText(reserveThread.time_use);
+//        TextView parkingOccupancy = findViewById(R.id.parkingOccupancy);
+//        parkingOccupancy.setText(reserveThread.occupy+"/"+reserveThread.capacity);
         Button info = findViewById(R.id.info);
         info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,57 +112,13 @@ public class book1 extends AppCompatActivity {
                 startActivity(infoIntent);
             }
         });
-
-        final List<String> lists = new ArrayList<String>();
-        lists.add("综合排序");
-        lists.add("价格优先");
-        lists.add("距离优先");
-//        Button history = findViewById(R.id.history);
-
-        final Button select = findViewById(R.id.select);
-        final ListPopupWindow mListPop = new ListPopupWindow(this);
-        mListPop.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lists));
-        mListPop.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mListPop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mListPop.setAnchorView(select);//设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
-        mListPop.setModal(true);//设置是否是模式
-        mListPop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                select.setText(lists.get(position));
-                TextView notify=findViewById(R.id.notify);
-                switch (position){
-                    case 0:
-                        notify.setText("提示：综合考虑路程、价格、堵塞情况等");
-                        break;
-                    case 1:
-                        notify.setText("提示：按价格排序进行推荐");
-                        break;
-                    case 2:
-                        notify.setText("提示：按距离排序进行推荐");
-                        break;
-                }
-                mListPop.dismiss();
-            }
-        });
-
-        select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListPop.show();
-            }
-        });
-
         final Button roadBook1 = findViewById(R.id.roadBook1);
         roadBook1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i1 = new Intent();
                 j = true;
-
                 i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市文心一路"+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
-
                 try {
                     startActivity(i1);
                     initNotify();
@@ -270,11 +206,6 @@ public class book1 extends AppCompatActivity {
                             .to(enNode));
                     mSearch.destroy();
                 }
-
-                //设置缩放
-                //builder = new MapStatus.Builder();
-                //builder.zoom(12.0f);
-                //mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
         });
 

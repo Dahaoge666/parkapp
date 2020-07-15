@@ -77,19 +77,6 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
     </LinearLayout>
-    <Button
-        android:id="@+id/time"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
-        android:onClick="click"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/whitebutton"
-        android:text="预约时间"
-        android:textColor="#000000"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
@@ -108,14 +95,6 @@
             android:text=""
             android:textSize="20sp"
             android:textColor="#000000"/>
-        <!--<TextView-->
-            <!--android:id="@+id/parkingCapacity1"-->
-            <!--android:layout_marginTop="35dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:padding="5dp"-->
-            <!--android:textColor="#1890FF"-->
-            <!--android:text="" />-->
         <LinearLayout
             android:id="@+id/linear1"
             android:visibility="gone"
@@ -130,6 +109,7 @@
                 android:textColor="#000000"
                 android:gravity="center"/>
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/star1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="true"
@@ -184,6 +164,7 @@
                 android:gravity="center"
                 android:textColor="#000000"/>
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/star2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="true"
@@ -194,26 +175,6 @@
                 android:stepSize="1"
                 style="@style/Widget.MaterialRatingBar.RatingBar" />
         </LinearLayout>
-        <!--<Button-->
-            <!--android:drawableTop="@drawable/yuyue3"-->
-            <!--android:id="@+id/bookButton2"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="70dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:background="@null"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginRight="20dp"-->
-            <!--android:text="预定"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="#1890FF" />-->
-        <!--<TextView-->
-            <!--android:id="@+id/parkingCapacity2"-->
-            <!--android:layout_marginTop="35dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:padding="5dp"-->
-            <!--android:textColor="#1890FF"-->
-            <!--android:text="" />-->
         <Button
             android:id="@+id/parking2"
             android:visibility="gone"
@@ -245,26 +206,6 @@
             android:textSize="20sp"
             android:textColor="#000000"/>
 
-        <!--<Button-->
-            <!--android:drawableTop="@drawable/yuyue3"-->
-            <!--android:id="@+id/bookButton3"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="70dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:background="@null"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginRight="20dp"-->
-            <!--android:text="预定"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="#1890FF" />-->
-        <!--<TextView-->
-            <!--android:id="@+id/parkingCapacity3"-->
-            <!--android:layout_marginTop="35dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:padding="5dp"-->
-            <!--android:textColor="#1890FF"-->
-            <!--android:text="" />-->
         <LinearLayout
             android:id="@+id/linear3"
             android:visibility="gone"
@@ -280,6 +221,7 @@
                 android:textSize="20sp"
                 android:textColor="#000000"/>
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/star3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="true"

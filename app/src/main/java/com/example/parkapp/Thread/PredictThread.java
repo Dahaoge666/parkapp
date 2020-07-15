@@ -20,9 +20,6 @@ public class PredictThread extends Thread {
         GsonUtils gsonUtils = new GsonUtils();
         try {
             String responseData = http.run("http://mock-api.com/NnQ0W5gY.mock/predict");
-
-
-
             PredictBean predictBean = gsonUtils.parserJsonToPredictData(responseData);
             capacity = predictBean.getCapacity();
             occupy = predictBean.getOccupy();

@@ -7,18 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorGreen">
-        <!--<TextView-->
-            <!--android:id="@+id/shortBookBack"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="0.3"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:text="@string/backArrow"-->
-            <!--android:textSize="30sp"-->
-            <!--android:textColor="#FFFFFF"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:clickable="true" />-->
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -27,20 +15,6 @@
             android:text="Reserved parking"
             android:textColor="#000000"
             android:textSize="30sp" />
-        <!--<View-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="0.3"/>-->
-        <Button
-            android:visibility="gone"
-            android:id="@+id/change"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:text="变更"
-            android:background="@null"
-            android:textColor="#FFFFFF"/>
     </LinearLayout>
 
 
@@ -139,6 +113,7 @@
             android:gravity="center_vertical"/>
 
         <TextView
+            android:id="@+id/travelTime"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="0 hours 16 minutes"
@@ -165,6 +140,7 @@
             android:gravity="center_vertical"/>
 
         <TextView
+            android:id="@+id/parkingOccupancy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
