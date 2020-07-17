@@ -198,7 +198,7 @@ public class MainActivity extends Activity {
             public boolean onMarkerClick(Marker marker) {
 
                 final String name = marker.getExtraInfo().getString("name");
-                PredictThread predictThread = new PredictThread();
+                PredictThread predictThread = new PredictThread("");
                 try {
                     predictThread.start();
                     predictThread.join();

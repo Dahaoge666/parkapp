@@ -3,6 +3,7 @@ package com.example.parkapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -57,7 +58,7 @@ public class Normal extends Activity {
 
 
     private void intentPage(final Integer dataNum){
-        NormalThread normalThread = new NormalThread();
+        NormalThread normalThread = new NormalThread("");
         try {
             normalThread.start();
             normalThread.join();
@@ -65,11 +66,13 @@ public class Normal extends Activity {
             System.out.println("Exception from main");
         }
         NormalBean[] normalBean = normalThread.normalBean;
+        Log.d("ceshi", normalBean[dataNum].getDistance()+"");
+
         Intent intent = new Intent(Normal.this, NomalDetails.class);
         intent.putExtra("longtitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
         intent.putExtra("latitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[1]));
         intent.putExtra("capacity",normalBean[dataNum].getCapacity());
-        intent.putExtra("distance",normalBean[dataNum].getDistance());
+        intent.putExtra("distance",Double.valueOf(normalBean[dataNum].getDistance()));
         intent.putExtra("name",normalBean[dataNum].getName());
         startActivity(intent);
     }
@@ -77,7 +80,7 @@ public class Normal extends Activity {
 
 
     private void setPage(){
-        NormalThread normalThread = new NormalThread();
+        NormalThread normalThread = new NormalThread("");
         try {
             normalThread.start();
             normalThread.join();

@@ -50,13 +50,15 @@ public class NomalDetails extends AppCompatActivity {
 
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         final String name=intent.getExtras().getString("name");
-        final Double latitude=intent.getExtras().getDouble("latitude");
-        final Double longtitude=intent.getExtras().getDouble("longtitude");
-        final Double capacity=intent.getExtras().getDouble("capacity");
-        final Double distance=intent.getExtras().getDouble("distance");
-        final String time=intent.getExtras().getString("time");
-//        longBookBack=findViewById(R.id.longBookBack);
+        final Double latitude=intent.getDoubleExtra("latitude",0);
+        final Double longtitude=intent.getDoubleExtra("longtitude",0);
+        final Integer capacity=intent.getIntExtra("capacity",0);
+        final Double distance=intent.getDoubleExtra("distance",0);
+        final String time=intent.getStringExtra("time");
 
+
+
+//        longBookBack=findViewById(R.id.longBookBack)
         //获取地图控件引用
         mMapView = findViewById(R.id.mapViewLongBook);
         mBaiduMap = mMapView.getMap();
@@ -98,7 +100,7 @@ public class NomalDetails extends AppCompatActivity {
         findViewById(R.id.info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NomalDetails.this,priceinfo.class);
+                Intent intent = new Intent(NomalDetails.this, PriceInfo.class);
                 startActivity(intent);
             }
         });

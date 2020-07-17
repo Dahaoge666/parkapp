@@ -7,7 +7,6 @@
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -15,7 +14,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:name=".DemoApplication"
@@ -30,13 +28,12 @@
         <activity android:name=".Introduction"></activity>
         <activity android:name=".booked2" />
         <activity android:name=".bookd_info" />
-        <activity android:name=".priceinfo" />
+        <activity android:name=".PriceInfo" />
         <activity android:name=".booked" />
         <activity android:name=".Mywallet" />
         <activity android:name=".Mybook" />
         <activity android:name=".ChangePark" />
         <activity android:name=".Normal" />
-        <activity android:name=".searchPopup" />
         <activity
             android:name=".MainActivityPopupWindow"
             android:label="@string/title_activity_popup"

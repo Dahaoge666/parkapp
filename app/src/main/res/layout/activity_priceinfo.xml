@@ -22,4 +22,12 @@
         android:layout_marginTop="20dp"
         android:text="iSpark智能停车收费标准如下："
         android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/info"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:textSize="18sp"/>
 </LinearLayout>

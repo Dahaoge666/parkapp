@@ -16,11 +16,15 @@ public class ReserveThread extends Thread {
     public String price_info;
     public String time_use;
     public Integer distance;
+    private String params;
+    public ReserveThread(String params) {
+        this.params = params;
+    }
     public void run() {
         OkHttp http = new OkHttp();
         GsonUtils gsonUtils = new GsonUtils();
         try {
-            String responseData = http.run("http://mock-api.com/NnQ0W5gY.mock/reserve");
+            String responseData = http.run("http://mock-api.com/NnQ0W5gY.mock/reserve"+params);
             ReserveBean reserveBean = gsonUtils.parserJsonToReserveData(responseData);
             name = reserveBean.getName();
             capacity = reserveBean.getCapacity();
