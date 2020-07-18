@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -44,7 +45,6 @@ import android.widget.Toast;
 import overlayutil.DrivingRouteOverlay;
 
 public class Reserve extends AppCompatActivity {
-    private TextView shortBookBack;
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
     private MapStatus.Builder builder;
@@ -62,31 +62,6 @@ public class Reserve extends AppCompatActivity {
         final Double longtitude = intent.getDoubleExtra("longtitude",0);
         final String currentName = intent.getStringExtra("name");
         final String destination = intent.getStringExtra("destination");
-        final ReserveThread reserveThread = new ReserveThread("");
-        try {
-            reserveThread.start();
-            reserveThread.join();
-        } catch (Exception e) {
-            System.out.println("Exception from main");
-        }
-        //获取地图控件引用
-        mMapView = findViewById(R.id.mapViewBook);
-        mBaiduMap = mMapView.getMap();
-        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-        mBaiduMap.setMyLocationEnabled(true);
-        builder = new MapStatus.Builder();
-        builder.zoom(16.0f);
-        final LatLng parkPosition = new LatLng(latitude,longtitude);
-        builder.target(parkPosition);
-        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-        final BitmapDescriptor bitmap = BitmapDescriptorFactory
-                .fromResource(R.drawable.icon_gcoding);
-        OverlayOptions markOption = new MarkerOptions()
-                .position(parkPosition)
-                .perspective(true)
-                .icon(bitmap)
-                .alpha(0.8f);
-        mBaiduMap.addOverlay(markOption);
 
 
         //设置路线规划的监听器
@@ -127,6 +102,39 @@ public class Reserve extends AppCompatActivity {
             }
         };
         mSearch.setOnGetRoutePlanResultListener(listener);
+
+        final Button roadBook1 = findViewById(R.id.roadBook1);
+
+
+        final ReserveThread reserveThread = new ReserveThread("");
+        try {
+            reserveThread.start();
+            reserveThread.join();
+        } catch (Exception e) {
+            System.out.println("Exception from main");
+        }
+
+        //获取地图控件引用
+        mMapView = findViewById(R.id.mapViewBook);
+        mBaiduMap = mMapView.getMap();
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+        mBaiduMap.setMyLocationEnabled(true);
+        builder = new MapStatus.Builder();
+        builder.zoom(16.0f);
+        final LatLng parkPosition = new LatLng(latitude,longtitude);
+        builder.target(parkPosition);
+        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+        final BitmapDescriptor bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.icon_gcoding);
+        OverlayOptions markOption = new MarkerOptions()
+                .position(parkPosition)
+                .perspective(true)
+                .icon(bitmap)
+                .alpha(0.8f);
+        mBaiduMap.addOverlay(markOption);
+
+
+
         //按钮触发器
         Button road = findViewById(R.id.road);
         road.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +174,7 @@ public class Reserve extends AppCompatActivity {
             }
         });
 
-        final Button roadBook1 = findViewById(R.id.roadBook1);
+
         roadBook1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,15 +183,7 @@ public class Reserve extends AppCompatActivity {
                 i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+reserveThread.name+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
                 try {
                     startActivity(i1);
-                    initNotify(reserveThread.name);
-                    roadBook1.setText("CHANGE");
-                    roadBook1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            changeNotify(mSearch , currentName);
-
-                        }
-                    });
+                    initNotify(reserveThread.name,destination);
                 }catch (Exception e){
                     Toast.makeText(Reserve.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
@@ -197,8 +197,6 @@ public class Reserve extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
     }
     @Override
@@ -219,7 +217,7 @@ public class Reserve extends AppCompatActivity {
         mMapView.onDestroy();
     }
 
-    private void changeNotify(final RoutePlanSearch mSearch, final String currentName){
+    private void changeNotify(final RoutePlanSearch mSearch, final String currentName, final String destination){
         //先new出一个监听器，设置好监听
         DialogInterface.OnClickListener dialogOnclicListener = new DialogInterface.OnClickListener() {
 
@@ -285,7 +283,7 @@ public class Reserve extends AppCompatActivity {
                                     }
                                 }
                             });
-                            initNotify(reserveThread.name);
+                            initNotify(reserveThread.name,destination);
 
                         }
                         break;
@@ -307,31 +305,42 @@ public class Reserve extends AppCompatActivity {
 
 
 
-    private void initNotify(String name){
+    private void initNotify(String name,String destination){
         Log.d("notify", "initNotify: ");
         String id = "8.0";
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notification;
 
-        Intent intent=new Intent(this, Reserve.class);
+        Intent intent=new Intent(this, bookd_info.class);
 
-        PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,0);
+        intent.putExtra("destination",destination);
+        intent.putExtra("name","文心三路");
+        intent.putExtra("latitude",22.525269);
+        intent.putExtra("longtitude",113.937374);
 
 
+        PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationChannel mChannel = new NotificationChannel(id, "提示", NotificationManager.IMPORTANCE_LOW);
         notificationManager.createNotificationChannel(mChannel);
-        notification = new Notification.Builder(this)
+        notification = new Notification.Builder(this,"default")
                 .setChannelId(id)
                 .setContentTitle("Better parking spot is detected:"+name)
                 .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.hongyan)
                 .setAutoCancel(true)
-                .addAction(R.mipmap.ic_launcher,"确认",pendingIntent)
-                .addAction(R.mipmap.ic_launcher,"取消",pendingIntent)
-                .addAction(R.mipmap.ic_launcher,"忽略",pendingIntent)
                 .build();
-
         notificationManager.notify(0, notification);
+
+//        roadBook1.setText("CHANGE");
+//        roadBook1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                changeNotify(mSearch, currentName, destination);
+//
+//            }
+//        });
+//        }
     }
 
 }

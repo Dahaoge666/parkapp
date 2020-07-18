@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -29,6 +31,7 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.example.parkapp.Thread.ReserveThread;
 
 import overlayutil.DrivingRouteOverlay;
 
@@ -41,6 +44,8 @@ public class bookd_info extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookd_info);
+
+
 
         //获取地图控件引用
         mMapView = findViewById(R.id.mapViewBook);
@@ -60,57 +65,60 @@ public class bookd_info extends Activity {
                 .icon(bitmap)
                 .alpha(0.8f);
         mBaiduMap.addOverlay(markOption);
+
+
+
         final Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
-        final String name=intent.getExtras().getString("name");
-        final String time=intent.getExtras().getString("time");
-        TextView book_name = findViewById(R.id.book_name);
-        TextView book_time = findViewById(R.id.book_time);
-        book_name.setText(name);
-        book_time.setText(""+time);
+        final Double latitude = intent.getDoubleExtra("latitude",0);
+        final Double longtitude = intent.getDoubleExtra("longtitude",0);
+        final String name = intent.getStringExtra("name");
+        final String destination = intent.getStringExtra("destination");
+
+        final ReserveThread reserveThread = new ReserveThread("");
+        try {
+            reserveThread.start();
+            reserveThread.join();
+        } catch (Exception e) {
+            System.out.println("Exception from main");
+        }
+
+        TextView travelTime = findViewById(R.id.travelTime);
+        travelTime.setText(reserveThread.time_use);
+        TextView parkingOccupancy = findViewById(R.id.parkingOccupancy);
+        parkingOccupancy.setText(reserveThread.occupy+"/"+reserveThread.capacity);
+        final String price_info = reserveThread.price_info;
+        Button info = findViewById(R.id.info);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent infoIntent = new Intent(bookd_info.this, PriceInfo.class);
+                infoIntent.putExtra("price_info",price_info);
+                startActivity(infoIntent);
+            }
+        });
+
+
         Button change = findViewById(R.id.change);
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent changeIntent=new Intent(bookd_info.this, Normal.class);
-                changeIntent.putExtra("name","深圳公园");
-                changeIntent.putExtra("latitude",22.53945);
-                changeIntent.putExtra("longtitude",113.942651);
-                startActivity(changeIntent);
+                Intent i1 = new Intent();
+                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+reserveThread.name+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+                try {
+                    startActivity(i1);
+                }catch (Exception e){
+                    Toast.makeText(bookd_info.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        Button cancelButton = findViewById(R.id.cancelButon);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+
+
+        findViewById(R.id.cancelButon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogInterface.OnClickListener dialogOnclicListener = new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case Dialog.BUTTON_POSITIVE://再次预定
-                                Intent changeIntent=new Intent(bookd_info.this, Normal.class);
-                                changeIntent.putExtra("name","深圳公园");
-                                changeIntent.putExtra("latitude",22.53945);
-                                changeIntent.putExtra("longtitude",113.942651);
-                                startActivity(changeIntent);
-                                break;
-                            case Dialog.BUTTON_NEUTRAL://返回主页
-                                Intent intent1 = new Intent(bookd_info.this, Mybook.class);
-                                intent1.putExtra("name",2);
-                                startActivity(intent1);
-                                break;
-                        }
-                    }
-                };
-                //dialog参数设置
-                AlertDialog.Builder builder = new AlertDialog.Builder(bookd_info.this);  //先得到构造器
-                builder.setTitle("取消订单"); //设置标题
-                builder.setMessage("已为您取消订单，您可再次预定或返回。");
-                builder.setIcon(R.drawable.park);//设置图标，图片id即可
-                builder.setPositiveButton("再次预定", dialogOnclicListener);
-                builder.setNeutralButton("返回", dialogOnclicListener);
-                builder.create().show();
-
+                Intent intent = new Intent(bookd_info.this,MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -176,16 +184,21 @@ public class bookd_info extends Activity {
         road.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlanNode stNode = PlanNode.withCityNameAndPlaceName("深圳", "文心二路");
-                PlanNode enNode = PlanNode.withCityNameAndPlaceName("深圳", "东角头");
-                mSearch.drivingSearch((new DrivingRoutePlanOption())
-                        .from(stNode)
-                        .to(enNode));
-                mSearch.destroy();
-                //设置缩放
-                //builder = new MapStatus.Builder();
-                //builder.zoom(12.0f);
-                //mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+                PlanNode stNode = PlanNode.withCityNameAndPlaceName("深圳", name);
+                PlanNode enNode = PlanNode.withCityNameAndPlaceName("深圳", reserveThread.name);
+                try {
+                    mSearch.drivingSearch((new DrivingRoutePlanOption())
+                            .from(stNode)
+                            .to(enNode));
+                    mSearch.destroy();
+                }catch (Exception e){
+                    stNode = PlanNode.withCityNameAndPlaceName("深圳", "文心二路");
+                    enNode = PlanNode.withCityNameAndPlaceName("深圳", "东角头");
+                    mSearch.drivingSearch((new DrivingRoutePlanOption())
+                            .from(stNode)
+                            .to(enNode));
+                    mSearch.destroy();
+                }
             }
         });
     }

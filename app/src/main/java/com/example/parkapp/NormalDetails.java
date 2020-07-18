@@ -37,7 +37,7 @@ import android.widget.Toast;
 
 import overlayutil.DrivingRouteOverlay;
 
-public class NomalDetails extends AppCompatActivity {
+public class NormalDetails extends AppCompatActivity {
     private TextView longBookBack;
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
@@ -83,7 +83,7 @@ public class NomalDetails extends AppCompatActivity {
 ////        longBookBack.setOnClickListener(new View.OnClickListener() {
 ////            @Override
 ////            public void onClick(View view) {
-////                Intent intent = new Intent(NomalDetails.this,MainActivity.class);
+////                Intent intent = new Intent(NormalDetails.this,MainActivity.class);
 ////                startActivity(intent);
 ////            }
 ////        });
@@ -100,7 +100,7 @@ public class NomalDetails extends AppCompatActivity {
         findViewById(R.id.info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NomalDetails.this, PriceInfo.class);
+                Intent intent = new Intent(NormalDetails.this, PriceInfo.class);
                 startActivity(intent);
             }
         });
@@ -116,25 +116,25 @@ public class NomalDetails extends AppCompatActivity {
                         switch (which) {
                             case Dialog.BUTTON_POSITIVE://开始导航
                                 roadBook1.setText("返回主页");
-                                Toast.makeText(NomalDetails.this,"预约成功！可前往我的预约中查看订单。",Toast.LENGTH_LONG).show();
+                                Toast.makeText(NormalDetails.this,"预约成功！可前往我的预约中查看订单。",Toast.LENGTH_LONG).show();
 
                                 roadBook1.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent = new Intent(NomalDetails.this, MainActivity.class);
+                                        Intent intent = new Intent(NormalDetails.this, MainActivity.class);
                                         startActivity(intent);
                                     }
                                 });
                                 break;
                             case Dialog.BUTTON_NEUTRAL://返回主页
-//                                Intent intent = new Intent(NomalDetails.this, MainActivity.class);
+//                                Intent intent = new Intent(NormalDetails.this, MainActivity.class);
 //                                startActivity(intent);
                                 break;
                         }
                     }
                 };
                 //dialog参数设置
-                AlertDialog.Builder builder = new AlertDialog.Builder(NomalDetails.this);  //先得到构造器
+                AlertDialog.Builder builder = new AlertDialog.Builder(NormalDetails.this);  //先得到构造器
                 builder.setTitle(name); //设置标题
                 builder.setMessage("即将为您预约"+time+"的停车位，请确认信息。");
                 builder.setIcon(R.drawable.park);//设置图标，图片id即可
@@ -174,7 +174,7 @@ public class NomalDetails extends AppCompatActivity {
             public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
 
                 if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
-                    Toast.makeText(NomalDetails.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NormalDetails.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
                 }
                 if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
                     // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息

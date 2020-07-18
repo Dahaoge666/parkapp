@@ -68,7 +68,7 @@ public class Normal extends Activity {
         NormalBean[] normalBean = normalThread.normalBean;
         Log.d("ceshi", normalBean[dataNum].getDistance()+"");
 
-        Intent intent = new Intent(Normal.this, NomalDetails.class);
+        Intent intent = new Intent(Normal.this, NormalDetails.class);
         intent.putExtra("longtitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
         intent.putExtra("latitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[1]));
         intent.putExtra("capacity",normalBean[dataNum].getCapacity());

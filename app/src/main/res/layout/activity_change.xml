@@ -1,17 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorGreen">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="Reserved parking"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:drawableRight="@drawable/xiala"
+        android:background="@drawable/biankuang"
+        android:text="Comprehensive ranking"
+        android:textColor="#000000"
+        android:textSize="20sp" />
     <TextView
+        android:visibility="gone"
+        android:id="@+id/notify"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/colorGreen"
-        android:text="Parking"
-        android:textSize="20sp"
-        android:textColor="#FFFFFF"
-        android:gravity="center" />
-
+        android:gravity="center"
+        android:text="Tip: Consider the distance, price, congestion, etc."
+        android:textColor="#000000"
+        android:textSize="20sp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp">
@@ -127,48 +157,49 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/road"
-            android:layout_width="100dp"
-            android:layout_height="25dp"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
             android:background="@drawable/whitebutton"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textColor="#ffffff"
-            android:text="显示路线信息>"/>
+            android:text="Show route>"/>
         <com.baidu.mapapi.map.MapView
             android:id="@+id/mapViewBook"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true">
-
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:background="#FFFFFF">
             <Button
-                android:id="@+id/change"
-                android:layout_width="match_parent"
+                android:drawableTop="@drawable/navigation"
+                android:id="@+id/roadBook1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/whitebutton"
-                android:text="Change Park"
-                android:textSize="23sp"
-                android:textColor="#ffffff"
-                android:layout_centerVertical="true" />
-            <Button
-                android:id="@+id/cancelButon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/whitebutton"
-                android:text="取消订单"
-                android:textSize="23sp"
-                android:textColor="#ffffff"
+                android:text="CHANGE"
+                android:background="@null"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:alpha="0.8"
+                android:layout_marginLeft="50dp"
                 android:layout_centerVertical="true" />
 
-        </LinearLayout>
+            <Button
+                android:drawableTop="@drawable/cancel"
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:background="@null"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:alpha="0.8"
+
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="50dp"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>
