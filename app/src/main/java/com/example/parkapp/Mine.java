@@ -16,6 +16,18 @@ public class Mine extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine);
 
+        TextView time_place_picker=findViewById(R.id.time_place_picker);
+
+
+        time_place_picker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Mine.this, Selection.class);
+                startActivity(intent);
+            }
+        });
+
+
         TextView mybook=findViewById(R.id.mybook);
 
 

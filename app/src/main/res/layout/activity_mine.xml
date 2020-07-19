@@ -22,6 +22,20 @@
         android:background="#ffffff"/>
 
     <TextView
+        android:id="@+id/time_place_picker"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text=" 时间地点选择"
+        android:drawableLeft="@mipmap/dingdan1"
+        android:textSize="25sp"
+        android:gravity="center_vertical"/>
+
+
+    <View  android:layout_height="1px"
+        android:layout_width="match_parent"
+        android:background="#ffffff"/>
+
+    <TextView
         android:id="@+id/mybook"
         android:layout_width="match_parent"
         android:layout_height="50dp"
