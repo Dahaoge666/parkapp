@@ -29,23 +29,26 @@ public class Normal extends Activity {
 
 
     private void intentPage(final Integer dataNum){
-        NormalThread normalThread = new NormalThread("");
-        try {
-            normalThread.start();
-            normalThread.join();
-        } catch (Exception e) {
-            System.out.println("Exception from main");
-        }
-        NormalBean[] normalBean = normalThread.normalBean;
-        Log.d("ceshi", normalBean[dataNum].getDistance()+"");
+//        NormalThread normalThread = new NormalThread("");
+//        try {
+//            normalThread.start();
+//            normalThread.join();
+//        } catch (Exception e) {
+//            System.out.println("Exception from main");
+//        }
+//        NormalBean[] normalBean = normalThread.normalBean;
+//        Log.d("ceshi", normalBean[dataNum].getDistance()+"");
+//
+//        Intent intent = new Intent(Normal.this, NormalDetails.class);
+//        intent.putExtra("longitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
+//        intent.putExtra("latitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[1]));
+//        intent.putExtra("capacity",normalBean[dataNum].getCapacity());
+//        intent.putExtra("distance",Double.valueOf(normalBean[dataNum].getDistance()));
+//        intent.putExtra("name",normalBean[dataNum].getName());
+//        startActivity(intent);
 
-        Intent intent = new Intent(Normal.this, NormalDetails.class);
-        intent.putExtra("longitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
-        intent.putExtra("latitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[1]));
-        intent.putExtra("capacity",normalBean[dataNum].getCapacity());
-        intent.putExtra("distance",Double.valueOf(normalBean[dataNum].getDistance()));
-        intent.putExtra("name",normalBean[dataNum].getName());
-        startActivity(intent);
+          Intent intent = new Intent(Normal.this, locationDemo.class);
+          startActivity(intent);
     }
 
 

@@ -34,6 +34,9 @@
         <activity android:name=".Mybook" />
         <activity android:name=".ChangePark" />
         <activity android:name=".Normal" />
+        //用于测试
+        <activity android:name=".locationDemo"/>
+
         <activity
             android:name=".MainActivityPopupWindow"
             android:label="@string/title_activity_popup"
