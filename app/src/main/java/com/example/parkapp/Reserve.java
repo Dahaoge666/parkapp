@@ -59,7 +59,7 @@ public class Reserve extends AppCompatActivity {
 
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         final Double latitude = intent.getDoubleExtra("latitude",0);
-        final Double longtitude = intent.getDoubleExtra("longtitude",0);
+        final Double longitude = intent.getDoubleExtra("longitude",0);
         final String currentName = intent.getStringExtra("name");
         final String destination = intent.getStringExtra("destination");
 
@@ -121,7 +121,7 @@ public class Reserve extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
         builder.zoom(16.0f);
-        final LatLng parkPosition = new LatLng(latitude,longtitude);
+        final LatLng parkPosition = new LatLng(longitude,latitude);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         final BitmapDescriptor bitmap = BitmapDescriptorFactory

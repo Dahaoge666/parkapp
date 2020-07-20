@@ -13,8 +13,7 @@ import com.example.parkapp.Bean.NormalBean;
 import com.example.parkapp.Thread.NormalThread;
 
 public class Normal extends Activity {
-//    private ListPopupWindow mListPop;
-//    private List<String> lists = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,34 +24,6 @@ public class Normal extends Activity {
         Double longtitude=intent.getDoubleExtra("longtitude",'0');
         TextView destination=findViewById(R.id.destination);
         destination.setText("   "+name);
-//        lists.add("Comprehensive ranking");
-//        lists.add("Price first");
-//        lists.add("Distance first");
-//        mListPop = new ListPopupWindow(this);
-//        mListPop.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lists));
-//        final Button select = findViewById(R.id.select);
-//        mListPop.setWidth(ActionBar.LayoutParams.WRAP_CONTENT);
-//        mListPop.setHeight(ActionBar.LayoutParams.WRAP_CONTENT);
-//        mListPop.setAnchorView(select);//设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
-//        mListPop.setModal(true);//设置是否是模式
-//        mListPop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//                select.setText(lists.get(position));
-//
-//                if (lists.get(position)=="Distance first"){
-//                    getList();
-//                }
-//                mListPop.dismiss();
-//            }
-//        });
-//        select.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mListPop.show();
-//            }
-//        });
         setPage();
     }
 
@@ -69,7 +40,7 @@ public class Normal extends Activity {
         Log.d("ceshi", normalBean[dataNum].getDistance()+"");
 
         Intent intent = new Intent(Normal.this, NormalDetails.class);
-        intent.putExtra("longtitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
+        intent.putExtra("longitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
         intent.putExtra("latitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[1]));
         intent.putExtra("capacity",normalBean[dataNum].getCapacity());
         intent.putExtra("distance",Double.valueOf(normalBean[dataNum].getDistance()));
@@ -135,17 +106,4 @@ public class Normal extends Activity {
 
     }
 
-
-//    private void getList(){
-//
-//        for (Integer i=0;i<dbData.size();i++){
-//            for (Integer j=i;j<dbData.size();j++) {
-//                if (Double.parseDouble(dbData.get(j).get(4)) < Double.parseDouble(dbData.get(i).get(4))) {
-//                    Collections.swap(dbData, j, i);
-//                }
-//            }
-//        }
-//
-//        setPage();
-//    }
 }

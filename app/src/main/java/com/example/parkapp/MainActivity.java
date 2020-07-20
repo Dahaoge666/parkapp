@@ -279,8 +279,8 @@ public class MainActivity extends Activity {
 
                 intent.putExtra("destination",search.getText());
                 intent.putExtra("name","文心二路");
-                intent.putExtra("latitude",22.525269);
-                intent.putExtra("longtitude",113.937374);
+                intent.putExtra("longitude",22.525269);
+                intent.putExtra("latitude",113.937374);
                 intent.putExtra("change",1);
                 startActivity(intent);
             }
