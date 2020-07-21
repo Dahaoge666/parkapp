@@ -118,7 +118,7 @@ public class Reserve extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
         builder.zoom(16.0f);
-        final LatLng parkPosition = new LatLng(longitude,latitude);
+        final LatLng parkPosition = new LatLng(latitude,longitude);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         final BitmapDescriptor bitmap = BitmapDescriptorFactory

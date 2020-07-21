@@ -21,7 +21,7 @@ public class Normal extends Activity {
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         String name=intent.getStringExtra("name");
         Double latitude=intent.getDoubleExtra("latitude",'0');
-        Double longtitude=intent.getDoubleExtra("longtitude",'0');
+        Double longitude=intent.getDoubleExtra("longitude",'0');
         TextView destination=findViewById(R.id.destination);
         destination.setText("   "+name);
         setPage();
@@ -40,8 +40,8 @@ public class Normal extends Activity {
         Log.d("ceshi", normalBean[dataNum].getDistance()+"");
 
         Intent intent = new Intent(Normal.this, NormalDetails.class);
-        intent.putExtra("longitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
-        intent.putExtra("latitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[1]));
+        intent.putExtra("longitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[1]));
+        intent.putExtra("latitude",Double.valueOf(normalBean[dataNum].getAtitude().split(",")[0]));
         intent.putExtra("capacity",normalBean[dataNum].getCapacity());
         intent.putExtra("distance",Double.valueOf(normalBean[dataNum].getDistance()));
         intent.putExtra("name",normalBean[dataNum].getName());

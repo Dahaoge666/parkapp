@@ -12,7 +12,7 @@ public class ReserveThread extends Thread {
     public Integer remain;
     public String atitude;
     public Double latitude;
-    public Double longtitude;
+    public Double longitude;
     public String price_info;
     public String time_use;
     public Integer distance;
@@ -35,7 +35,7 @@ public class ReserveThread extends Thread {
             time_use = reserveBean.getTime_use();
             distance = reserveBean.getDistance();
             latitude = Double.valueOf(atitude.split(",")[1]);
-            longtitude = Double.valueOf(atitude.split(",")[0]);
+            longitude = Double.valueOf(atitude.split(",")[0]);
         }catch(IOException e) {
 
         }

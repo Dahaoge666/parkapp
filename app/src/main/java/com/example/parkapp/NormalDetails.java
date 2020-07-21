@@ -66,7 +66,7 @@ public class NormalDetails extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
         builder.zoom(14.0f);
-        LatLng parkPosition = new LatLng(longitude,latitude);
+        LatLng parkPosition = new LatLng(latitude,longitude);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         BitmapDescriptor bitmap = BitmapDescriptorFactory

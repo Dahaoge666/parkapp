@@ -62,14 +62,14 @@ public class MainActivity extends Activity {
     Calendar c = Calendar.getInstance();
     public SQLiteDatabase db;
     public double currentLatitude;
-    public double currentLongtitude;
+    public double currentLongitude;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private PoiSearch mPoiSearch;
     private List<PoiInfo> allAddr;
     private MapStatus.Builder builder;
     private boolean isFirstLocation = true;
     public double historyLatitude;
-    public double historyLongtitude;
+    public double historyLongitude;
     int m_year = c.get(Calendar.YEAR);
     int m_month = c.get(Calendar.MONTH);
     int m_day = c.get(Calendar.DAY_OF_MONTH);
@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
                         Log.d("MainActivity", "p.name--->" + p.name +"p.phoneNum" + p.phoneNum +" -->p.address:" + p.address + "p.location" + p.location);
                     }
                     historyLatitude=allAddr.get(0).location.latitude;
-                    historyLongtitude=allAddr.get(0).location.longitude;
+                    historyLongitude=allAddr.get(0).location.longitude;
                     historyName=allAddr.get(0).name;
                     mBaiduMap.clear();
                     LatLng point = new LatLng(allAddr.get(0).location.latitude, allAddr.get(0).location.longitude);
@@ -279,8 +279,8 @@ public class MainActivity extends Activity {
 
                 intent.putExtra("destination",search.getText());
                 intent.putExtra("name","文心二路");
-                intent.putExtra("longitude",22.525269);
-                intent.putExtra("latitude",113.937374);
+                intent.putExtra("longitude",113.937374);
+                intent.putExtra("latitude",22.525269);
                 intent.putExtra("change",1);
                 startActivity(intent);
             }
@@ -298,7 +298,7 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(MainActivity.this, Normal.class);
                 intent.putExtra("name",historyName);
                 intent.putExtra("latitude",historyLatitude);
-                intent.putExtra("longtitude",historyLongtitude);
+                intent.putExtra("longitude",historyLongitude);
                 startActivity(intent);
             }
         });
@@ -334,13 +334,13 @@ public class MainActivity extends Activity {
                 mListPop.dismiss();
                 switch (position){
                     case 0:
-                        historyLongtitude=113.936811;
+                        historyLongitude=113.936811;
                         historyLatitude=22.526892;
                     case 1:
-                        historyLongtitude=113.942651;
+                        historyLongitude=113.942651;
                         historyLatitude=22.53945;
                     case 2:
-                        historyLongtitude=113.930257;
+                        historyLongitude=113.930257;
                         historyLatitude=22.515024;
                 }
             }
@@ -365,28 +365,28 @@ public class MainActivity extends Activity {
         ParkdataBean[] parkDataBean = parkDataThread.parkDataBean;
         for (ParkdataBean parkData:parkDataBean){
             String name = parkData.getName();
-            Double longtitude = Double.valueOf(parkData.getAtitude().split(",")[0]);
-            Double latitude = Double.valueOf(parkData.getAtitude().split(",")[1]);
+            Double longitude = Double.valueOf(parkData.getAtitude().split(",")[1]);
+            Double latitude = Double.valueOf(parkData.getAtitude().split(",")[0]);
             int capacity = parkData.getCapacity();
             int occupy = parkData.getOccupy();
             int remain = parkData.getRemain();
             Double info = Double.valueOf(occupy)/capacity;
-            if(info<0.34){markSingle(latitude,longtitude,name,capacity,"little",occupy);}
-            else if (info<0.67){markSingle(latitude,longtitude,name,capacity,"middle",occupy);}
-            else{markSingle(latitude,longtitude,name,capacity,"much",occupy);}
+            if(info<0.34){markSingle(latitude,longitude,name,capacity,"little",occupy);}
+            else if (info<0.67){markSingle(latitude,longitude,name,capacity,"middle",occupy);}
+            else{markSingle(latitude,longitude,name,capacity,"much",occupy);}
         }
     }
     //标记函数
-    private void markSingle(double latitude,double longtitude,String name,Integer capacity,String Info,Integer occupation) {    //地图标注
+    private void markSingle(double latitude,double longitude,String name,Integer capacity,String Info,Integer occupation) {    //地图标注
 
-        LatLng point = new LatLng(latitude, longtitude);
+        LatLng point = new LatLng(latitude, longitude);
         BitmapDescriptor bitmap_much = BitmapDescriptorFactory.fromResource(R.drawable.red);
         BitmapDescriptor bitmap_middle = BitmapDescriptorFactory.fromResource(R.drawable.yellow);
         BitmapDescriptor bitmap_little = BitmapDescriptorFactory.fromResource(R.drawable.green);
         Bundle mBundle = new Bundle();
         mBundle.putString("name",name);
         mBundle.putDouble("latitude",latitude);
-        mBundle.putDouble("longtitude",longtitude);
+        mBundle.putDouble("longitude",longitude);
         mBundle.putInt("capacity",capacity);
 
         OverlayOptions markOption;
@@ -500,7 +500,7 @@ public class MainActivity extends Activity {
                     .longitude(location.getLongitude()).build();
             mBaiduMap.setMyLocationData(locData);
             currentLatitude = location.getLatitude();
-            currentLongtitude = location.getLongitude();
+            currentLongitude = location.getLongitude();
 
             if (isFirstLocation) {
                 isFirstLocation = false;
@@ -510,8 +510,8 @@ public class MainActivity extends Activity {
 //                BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.circle);
 //                MyLocationConfiguration mLocationConfiguration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL,true,mCurrentMarker,)
 
-                if (currentLatitude>22.27&&currentLatitude<22.52&&currentLongtitude>113.46&&currentLongtitude<114.37){
-                    currentPosition = new LatLng(currentLatitude,currentLongtitude);
+                if (currentLatitude>22.27&&currentLatitude<22.52&&currentLongitude>113.46&&currentLongitude<114.37){
+                    currentPosition = new LatLng(currentLatitude,currentLongitude);
                 }else{
                     currentPosition = new LatLng(22.525269,113.938);
 
@@ -522,7 +522,7 @@ public class MainActivity extends Activity {
                     Bundle mBundle = new Bundle();
                     mBundle.putString("name","");
                     mBundle.putDouble("latitude",0.0);
-                    mBundle.putDouble("longtitude",0.0);
+                    mBundle.putDouble("longitude",0.0);
                     mBundle.putInt("capacity",0);
                         OverlayOptions markOption = new MarkerOptions()
                                 .position(point)

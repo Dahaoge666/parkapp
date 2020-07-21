@@ -12,7 +12,7 @@ public class PredictThread extends Thread {
     public Integer remain;
     public String atitude;
     public Double latitude;
-    public Double longtitude;
+    public Double longitude;
     public List<Integer> predict;
 
     private String params;
@@ -32,7 +32,7 @@ public class PredictThread extends Thread {
             atitude = predictBean.getAtitude();
             predict = predictBean.getPredict();
             latitude = Double.valueOf(atitude.split(",")[1]);
-            longtitude = Double.valueOf(atitude.split(",")[0]);
+            longitude = Double.valueOf(atitude.split(",")[0]);
         }catch(IOException e) {
 
         }
