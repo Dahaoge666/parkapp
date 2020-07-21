@@ -45,6 +45,7 @@ public class Normal extends Activity {
         intent.putExtra("capacity",normalBean[dataNum].getCapacity());
         intent.putExtra("distance",Double.valueOf(normalBean[dataNum].getDistance()));
         intent.putExtra("name",normalBean[dataNum].getName());
+        intent.putExtra("price_info",normalBean[dataNum].getPrice_info());
         startActivity(intent);
     }
 

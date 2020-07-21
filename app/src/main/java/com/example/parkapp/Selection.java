@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -25,7 +26,6 @@ import java.util.Date;
 
 public class Selection extends Activity {
     private MapView mMapView = null;
-    private BaiduMap mBaiduMap;
     private MapStatus.Builder builder;
     public String time;
     @Override
@@ -35,7 +35,7 @@ public class Selection extends Activity {
 
         //获取地图控件引用
         mMapView = findViewById(R.id.mapViewBook);
-        mBaiduMap = mMapView.getMap();
+        final BaiduMap mBaiduMap = mMapView.getMap();
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
@@ -75,7 +75,36 @@ public class Selection extends Activity {
         });
 
 
+        mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+                mBaiduMap.clear();
+                LatLng parkPosition1 = new LatLng(point.latitude,point.longitude);
+
+                OverlayOptions markOption1 = new MarkerOptions()
+                        .position(parkPosition1)
+                        .icon(bitmap);
+                mBaiduMap.addOverlay(markOption1);
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                mBaiduMap.clear();
+                LatLng parkPosition2 = new LatLng(mapPoi.getPosition().latitude,mapPoi.getPosition().longitude);
+                OverlayOptions markOption2 = new MarkerOptions()
+                        .position(parkPosition2)
+                        .icon(bitmap);
+                mBaiduMap.addOverlay(markOption2);
+                Toast.makeText(getApplicationContext(), "hhh"+mapPoi.getPosition(),Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
+
     }
+
+
+
+
 
     private String getTime(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd  HH:mm");

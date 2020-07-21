@@ -1,9 +1,6 @@
 package com.example.parkapp;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,7 +32,7 @@ import com.example.parkapp.Thread.ReserveThread;
 
 import overlayutil.DrivingRouteOverlay;
 
-public class bookd_info extends Activity {
+public class Parking extends Activity {
 
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
@@ -43,7 +40,7 @@ public class bookd_info extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bookd_info);
+        setContentView(R.layout.activity_parking);
 
 
 
@@ -70,8 +67,9 @@ public class bookd_info extends Activity {
 
         final Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         final Double latitude = intent.getDoubleExtra("latitude",0);
-        final Double longtitude = intent.getDoubleExtra("longtitude",0);
+        final Double longitude = intent.getDoubleExtra("longitude",0);
         final String name = intent.getStringExtra("name");
+        final String type = intent.getStringExtra("name");
         final String destination = intent.getStringExtra("destination");
 
         final ReserveThread reserveThread = new ReserveThread("");
@@ -91,7 +89,7 @@ public class bookd_info extends Activity {
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent infoIntent = new Intent(bookd_info.this, PriceInfo.class);
+                Intent infoIntent = new Intent(Parking.this, PriceInfo.class);
                 infoIntent.putExtra("price_info",price_info);
                 startActivity(infoIntent);
             }
@@ -99,6 +97,9 @@ public class bookd_info extends Activity {
 
 
         Button change = findViewById(R.id.change);
+        if (type.equals( "change")){
+            change.setVisibility(View.VISIBLE);
+        }
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,7 +108,7 @@ public class bookd_info extends Activity {
                 try {
                     startActivity(i1);
                 }catch (Exception e){
-                    Toast.makeText(bookd_info.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Parking.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -116,7 +117,7 @@ public class bookd_info extends Activity {
         findViewById(R.id.cancelButon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(bookd_info.this,MainActivity.class);
+                Intent intent = new Intent(Parking.this,MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();
             }

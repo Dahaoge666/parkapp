@@ -6,11 +6,9 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -34,7 +32,6 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.example.parkapp.Thread.ReserveThread;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
 import android.util.Log;
 import android.view.View;
@@ -311,13 +308,13 @@ public class Reserve extends AppCompatActivity {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notification;
 
-        Intent intent=new Intent(this, bookd_info.class);
+        Intent intent=new Intent(this, Parking.class);
 
         intent.putExtra("destination",destination);
         intent.putExtra("name","文心三路");
         intent.putExtra("latitude",22.525269);
-        intent.putExtra("longtitude",113.937374);
-
+        intent.putExtra("longitude",113.937374);
+        intent.putExtra("type","change");
 
         PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationChannel mChannel = new NotificationChannel(id, "提示", NotificationManager.IMPORTANCE_LOW);

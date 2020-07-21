@@ -55,7 +55,7 @@ public class NormalDetails extends AppCompatActivity {
         final Integer capacity=intent.getIntExtra("capacity",0);
         final Double distance=intent.getDoubleExtra("distance",0);
         final String time=intent.getStringExtra("time");
-
+        final String price_info = intent.getStringExtra("price_info");
 
 
 //        longBookBack=findViewById(R.id.longBookBack)
@@ -78,6 +78,26 @@ public class NormalDetails extends AppCompatActivity {
                 .alpha(0.8f);
         mBaiduMap.addOverlay(markOption);
 
+
+
+        //定义Maker坐标点
+        LatLng point = new LatLng(22.525269, 113.937374);
+//构建Marker图标
+        BitmapDescriptor bitmap1 = BitmapDescriptorFactory
+                .fromResource(R.drawable.park_icon);
+//构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point) //必传参数
+                .icon(bitmap1) //必传参数
+                .draggable(true)
+//设置平贴地图，在地图中双指下拉查看效果
+                .flat(true)
+                .alpha(0.5f);
+//在地图上添加Marker，并显示
+        mBaiduMap.addOverlay(option);
+
+
+
         TextView parkName = findViewById(R.id.parkName);
         parkName.setText(name);
 
@@ -90,6 +110,7 @@ public class NormalDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NormalDetails.this, PriceInfo.class);
+                intent.putExtra("price_info",price_info);
                 startActivity(intent);
             }
         });

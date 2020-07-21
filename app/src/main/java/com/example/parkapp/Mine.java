@@ -34,8 +34,12 @@ public class Mine extends AppCompatActivity {
         mybook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Mine.this, Mybook.class);
-                intent.putExtra("name",0);
+                Intent intent = new Intent(Mine.this, Parking.class);
+                intent.putExtra("destination","深圳公园");
+                intent.putExtra("name","文心三路");
+                intent.putExtra("latitude",22.525269);
+                intent.putExtra("longitude",113.937374);
+                intent.putExtra("type","detail");
                 startActivity(intent);
             }
         });

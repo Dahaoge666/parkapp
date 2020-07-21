@@ -27,7 +27,7 @@
         <activity android:name=".Selection"></activity>
         <activity android:name=".Introduction" />
         <activity android:name=".booked2" />
-        <activity android:name=".bookd_info" />
+        <activity android:name=".Parking" />
         <activity android:name=".PriceInfo" />
         <activity android:name=".booked" />
         <activity android:name=".Mywallet" />
