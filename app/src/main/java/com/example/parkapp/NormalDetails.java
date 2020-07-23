@@ -65,7 +65,7 @@ public class NormalDetails extends AppCompatActivity {
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
-        builder.zoom(14.0f);
+        builder.zoom(16.0f);
         LatLng parkPosition = new LatLng(latitude,longitude);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
@@ -74,8 +74,7 @@ public class NormalDetails extends AppCompatActivity {
         OverlayOptions markOption = new MarkerOptions()
                 .position(parkPosition)
                 .perspective(true)
-                .icon(bitmap)
-                .alpha(0.8f);
+                .icon(bitmap);
         mBaiduMap.addOverlay(markOption);
 
 
@@ -88,11 +87,7 @@ public class NormalDetails extends AppCompatActivity {
 //构建MarkerOption，用于在地图上添加Marker
         OverlayOptions option = new MarkerOptions()
                 .position(point) //必传参数
-                .icon(bitmap1) //必传参数
-                .draggable(true)
-//设置平贴地图，在地图中双指下拉查看效果
-                .flat(true)
-                .alpha(0.5f);
+                .icon(bitmap1) ;//必传参数
 //在地图上添加Marker，并显示
         mBaiduMap.addOverlay(option);
 

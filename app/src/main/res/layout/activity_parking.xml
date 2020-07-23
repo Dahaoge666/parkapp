@@ -7,9 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorGreen"
-        android:text="Parking"
-        android:textSize="20sp"
-        android:textColor="#FFFFFF"
+        android:text="Parking Information"
+        android:textSize="30sp"
+        android:textColor="#000000"
         android:gravity="center" />
 
     <LinearLayout

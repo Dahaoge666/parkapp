@@ -296,6 +296,7 @@ public class MainActivity extends Activity {
                     return;
                 }
                 Intent intent = new Intent(MainActivity.this, Normal.class);
+                intent.putExtra("destination",search.getText());
                 intent.putExtra("name",historyName);
                 intent.putExtra("latitude",historyLatitude);
                 intent.putExtra("longitude",historyLongitude);

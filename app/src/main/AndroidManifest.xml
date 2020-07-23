@@ -26,13 +26,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Selection"></activity>
         <activity android:name=".Introduction" />
-        <activity android:name=".booked2" />
         <activity android:name=".Parking" />
         <activity android:name=".PriceInfo" />
-        <activity android:name=".booked" />
         <activity android:name=".Mywallet" />
-        <activity android:name=".Mybook" />
-        <activity android:name=".ChangePark" />
         <activity android:name=".Normal" />
         <activity
             android:name=".MainActivityPopupWindow"

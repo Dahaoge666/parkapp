@@ -42,7 +42,7 @@ import android.widget.Toast;
 import overlayutil.DrivingRouteOverlay;
 
 public class Reserve extends AppCompatActivity {
-    private MapView mMapView = null;
+    private MapView mMapView;
     private BaiduMap mBaiduMap;
     private MapStatus.Builder builder;
     private boolean i=false;
@@ -131,8 +131,19 @@ public class Reserve extends AppCompatActivity {
         mBaiduMap.addOverlay(markOption);
 
 
+        //定义Maker坐标点
+        LatLng point = new LatLng(latitude+0.01, longitude);
+        BitmapDescriptor bitmap1 = BitmapDescriptorFactory
+                .fromResource(R.drawable.park_icon);
+        OverlayOptions option = new MarkerOptions()
+                .position(point) //必传参数
+                .icon(bitmap1) ;//必传参数
 
+        mBaiduMap.addOverlay(option);
         //按钮触发器
+
+
+
         Button road = findViewById(R.id.road);
         road.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -63,13 +63,23 @@ public class Parking extends Activity {
                 .alpha(0.8f);
         mBaiduMap.addOverlay(markOption);
 
-
+        //定义Maker坐标点
+        LatLng point = new LatLng(22.525269, 113.937374);
+//构建Marker图标
+        BitmapDescriptor bitmap1 = BitmapDescriptorFactory
+                .fromResource(R.drawable.park_icon);
+//构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point) //必传参数
+                .icon(bitmap1) ;//必传参数
+//在地图上添加Marker，并显示
+        mBaiduMap.addOverlay(option);
 
         final Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         final Double latitude = intent.getDoubleExtra("latitude",0);
         final Double longitude = intent.getDoubleExtra("longitude",0);
         final String name = intent.getStringExtra("name");
-        final String type = intent.getStringExtra("name");
+        final String type = intent.getStringExtra("type");
         final String destination = intent.getStringExtra("destination");
 
         final ReserveThread reserveThread = new ReserveThread("");
@@ -96,7 +106,7 @@ public class Parking extends Activity {
         });
 
 
-        Button change = findViewById(R.id.change);
+        final Button change = findViewById(R.id.change);
         if (type.equals( "change")){
             change.setVisibility(View.VISIBLE);
         }
@@ -110,6 +120,13 @@ public class Parking extends Activity {
                 }catch (Exception e){
                     Toast.makeText(Parking.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
+
+
+                if (type.equals( "change")){
+                    change.setVisibility(View.GONE);
+                }
+
+
             }
         });
 

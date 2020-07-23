@@ -3,16 +3,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/colorGreen"
-        android:text="收费详情"
-        android:textSize="20sp"
-        android:textColor="#FFFFFF"
-        android:gravity="center" />
+        android:layout_height="50dp"
+        android:background="@color/colorGreen">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="Price Information"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+    </LinearLayout>
 
 
     <TextView
