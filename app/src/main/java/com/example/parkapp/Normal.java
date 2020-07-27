@@ -35,6 +35,7 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.example.parkapp.Bean.MyBookBean;
 import com.example.parkapp.Bean.NormalBean;
 import com.example.parkapp.Thread.NormalThread;
 
@@ -44,6 +45,7 @@ public class Normal extends Activity {
     private MapView mMapView;
     private BaiduMap mBaiduMap;
     private MapStatus.Builder builder;
+    NormalBean[] normalBean;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +53,12 @@ public class Normal extends Activity {
         Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
         final String name=intent.getStringExtra("name");
         final String destination=intent.getStringExtra("destination");
-        Double latitude=intent.getDoubleExtra("latitude",'0');
-        Double longitude=intent.getDoubleExtra("longitude",'0');
+        final Double historyLatitude = intent.getDoubleExtra("historyLatitude",0);
+        final Double historyLongitude = intent.getDoubleExtra("historyLongitude",0);
+        final String type=intent.getStringExtra("type");
+
+        MyBookBean myBookBean = new MyBookBean();
+
 
 
         //设置路线规划的监听器
@@ -94,9 +100,6 @@ public class Normal extends Activity {
         };
         mSearch.setOnGetRoutePlanResultListener(listener);
 
-
-
-
         //获取地图控件引用
         mMapView = findViewById(R.id.mapViewBook);
         mBaiduMap = mMapView.getMap();
@@ -104,7 +107,7 @@ public class Normal extends Activity {
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
         builder.zoom(16.0f);
-        final LatLng parkPosition = new LatLng(latitude,longitude);
+        final LatLng parkPosition = new LatLng(historyLatitude,historyLongitude);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         final BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -115,63 +118,42 @@ public class Normal extends Activity {
                 .icon(bitmap)
                 .alpha(0.8f);
         mBaiduMap.addOverlay(markOption);
-
-
-
-        //定义Maker坐标点
-        LatLng point = new LatLng(latitude+0.01, longitude);
-        BitmapDescriptor bitmap1 = BitmapDescriptorFactory
-                .fromResource(R.drawable.park_icon);
-        OverlayOptions option = new MarkerOptions()
-                .position(point) //必传参数
-                .icon(bitmap1) ;//必传参数
-
-        mBaiduMap.addOverlay(option);
-        //按钮触发器
-
-
-
-
-        NormalThread normalThread = new NormalThread("");
+        LatLng currentPoint = new LatLng(myBookBean.currentLatitude, myBookBean.currentLongitude);
+        NormalThread normalThread = new NormalThread("/"+historyLongitude+"/"+historyLatitude+"/"+type);
         try {
             normalThread.start();
             normalThread.join();
         } catch (Exception e) {
             System.out.println("Exception from main");
         }
-        final NormalBean[] normalBean = normalThread.normalBean;
-        //按钮触发器
-        Button road = findViewById(R.id.road);
-        road.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PlanNode stNode = PlanNode.withCityNameAndPlaceName("深圳", name);
-                PlanNode enNode = PlanNode.withCityNameAndPlaceName("深圳", normalBean[0].getName());
-                try {
-                    mSearch.drivingSearch((new DrivingRoutePlanOption())
-                            .from(stNode)
-                            .to(enNode));
-                    mSearch.destroy();
-                }catch (Exception e){
-                    stNode = PlanNode.withCityNameAndPlaceName("深圳", "文心二路");
-                    enNode = PlanNode.withCityNameAndPlaceName("深圳", "东角头");
-                    mSearch.drivingSearch((new DrivingRoutePlanOption())
-                            .from(stNode)
-                            .to(enNode));
-                    mSearch.destroy();
-                }
-            }
-        });
+        normalBean = normalThread.normalBean;
+        LatLng point = new LatLng(Double.valueOf(normalBean[0].getAtitude().split(",")[0]),Double.valueOf(normalBean[0].getAtitude().split(",")[1]));
+        PlanNode stNode = PlanNode.withLocation(currentPoint);
+        PlanNode enNode = PlanNode.withLocation(point);
+        try {
+            mSearch.drivingSearch((new DrivingRoutePlanOption())
+                    .from(stNode)
+                    .to(enNode));
+            mSearch.destroy();
+        }catch (Exception e){
+            Toast.makeText(Normal.this,"无法规划路线",Toast.LENGTH_SHORT);
+        }
 
+        myBookBean.parkName = normalBean[0].getName();
+        myBookBean.travelTime = normalBean[0].getTime_use();
+        myBookBean.parkingOccupancy = normalBean[0].getOccupy()+"/"+normalBean[0].getCapacity();
+        myBookBean.priceInfo = normalBean[0].getPrice_info();
+        myBookBean.parkLatitude = Double.valueOf(normalBean[0].getAtitude().split(",")[0]);
+        myBookBean.parkLongitude = Double.valueOf(normalBean[0].getAtitude().split(",")[1]);
         final Button roadBook1 = findViewById(R.id.roadBook1);
         roadBook1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i1 = new Intent();
-                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+normalBean[1].getName()+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+normalBean[0].getName()+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
                 try {
                     startActivity(i1);
-                    initNotify(normalBean[1].getName(),destination);
+                    initNotify(destination,name,historyLatitude,historyLongitude );
                 }catch (Exception e){
                     Toast.makeText(Normal.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
@@ -186,26 +168,11 @@ public class Normal extends Activity {
             }
         });
 
-
-
-
-
-//
-//        TextView destination1=findViewById(R.id.destination);
-//        destination1.setText("   "+name);
         setPage();
     }
 
 
     private void intentPage(final Integer dataNum){
-        NormalThread normalThread = new NormalThread("");
-        try {
-            normalThread.start();
-            normalThread.join();
-        } catch (Exception e) {
-            System.out.println("Exception from main");
-        }
-        NormalBean[] normalBean = normalThread.normalBean;
         Log.d("ceshi", normalBean[dataNum].getDistance()+"");
 
         Intent intent = new Intent(Normal.this, NormalDetails.class);
@@ -214,6 +181,8 @@ public class Normal extends Activity {
         intent.putExtra("capacity",normalBean[dataNum].getCapacity());
         intent.putExtra("distance",Double.valueOf(normalBean[dataNum].getDistance()));
         intent.putExtra("name",normalBean[dataNum].getName());
+        intent.putExtra("occupy",normalBean[dataNum].getOccupy());
+        intent.putExtra("time_use",normalBean[dataNum].getTime_use());
         intent.putExtra("price_info",normalBean[dataNum].getPrice_info());
         startActivity(intent);
     }
@@ -221,14 +190,6 @@ public class Normal extends Activity {
 
 
     private void setPage(){
-        NormalThread normalThread = new NormalThread("");
-        try {
-            normalThread.start();
-            normalThread.join();
-        } catch (Exception e) {
-            System.out.println("Exception from main");
-        }
-        NormalBean[] normalBean = normalThread.normalBean;
         Integer dbNum = normalBean.length;
         if (dbNum==0){return;}
         if (dbNum>0){
@@ -275,29 +236,23 @@ public class Normal extends Activity {
 
     }
 
-
-
-
-    private void initNotify(String name,String destination) {
+    private void initNotify(String destination,String historyName, Double historyLatitude, Double historyLongitude) {
         Log.d("notify", "initNotify: ");
         String id = "8.0";
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notification;
-
         Intent intent = new Intent(this, Normal.class);
-
-        intent.putExtra("destination", destination);
-        intent.putExtra("name", "文心三路");
-        intent.putExtra("latitude", 22.525269);
-        intent.putExtra("longitude", 113.937374);
-        intent.putExtra("type", "change");
-
+        intent.putExtra("destination",destination);
+        intent.putExtra("name",historyName);
+        intent.putExtra("historyLatitude",historyLatitude);
+        intent.putExtra("historyLongitude",historyLongitude);
+        intent.putExtra("type","change");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationChannel mChannel = new NotificationChannel(id, "提示", NotificationManager.IMPORTANCE_LOW);
         notificationManager.createNotificationChannel(mChannel);
         notification = new Notification.Builder(this, "default")
                 .setChannelId(id)
-                .setContentTitle("Better parking spot is detected:" + name)
+                .setContentTitle("Better parking spot is detected")
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.hongyan)

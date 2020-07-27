@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.parkapp.Bean.MyBookBean;
 
 public class Mine extends AppCompatActivity {
     private TextView mineBack;
@@ -30,17 +33,17 @@ public class Mine extends AppCompatActivity {
 
         TextView mybook=findViewById(R.id.mybook);
 
+        final MyBookBean myBookBean = new MyBookBean();
 
         mybook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Mine.this, Parking.class);
-                intent.putExtra("destination","深圳公园");
-                intent.putExtra("name","文心三路");
-                intent.putExtra("latitude",22.525269);
-                intent.putExtra("longitude",113.937374);
-                intent.putExtra("type","detail");
-                startActivity(intent);
+                if(myBookBean.parkName!=""){
+                    Intent intent = new Intent(Mine.this, Parking.class);
+                    startActivity(intent);}
+                else {
+                    Toast.makeText(Mine.this,"No Park Has Been Reserved",Toast.LENGTH_LONG).show();
+                }
             }
         });
 

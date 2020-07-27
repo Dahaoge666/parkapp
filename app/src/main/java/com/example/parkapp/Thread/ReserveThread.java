@@ -1,8 +1,15 @@
 package com.example.parkapp.Thread;
 
+import android.util.Log;
+
+import com.example.parkapp.Bean.PredictBean;
 import com.example.parkapp.Bean.ReserveBean;
 import com.example.parkapp.GsonUtils;
 import com.example.parkapp.OkHttp;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.IOException;
 
 public class ReserveThread extends Thread {
@@ -15,7 +22,7 @@ public class ReserveThread extends Thread {
     public Double longitude;
     public String price_info;
     public String time_use;
-    public Integer distance;
+    public Double distance;
     private String params;
     public ReserveThread(String params) {
         this.params = params;
@@ -24,8 +31,9 @@ public class ReserveThread extends Thread {
         OkHttp http = new OkHttp();
         GsonUtils gsonUtils = new GsonUtils();
         try {
-            String responseData = http.run("http://mock-api.com/NnQ0W5gY.mock/reserve"+params);
-            ReserveBean reserveBean = gsonUtils.parserJsonToReserveData(responseData);
+            Document doc = Jsoup.connect("http://182.92.219.51:8000/reserve"+params).get();
+            String body = doc.body().text();
+            ReserveBean reserveBean = gsonUtils.parserJsonToReserveData(body);
             name = reserveBean.getName();
             capacity = reserveBean.getCapacity();
             occupy = reserveBean.getOccupy();
@@ -34,10 +42,10 @@ public class ReserveThread extends Thread {
             price_info = reserveBean.getPrice_info();
             time_use = reserveBean.getTime_use();
             distance = reserveBean.getDistance();
-            latitude = Double.valueOf(atitude.split(",")[1]);
-            longitude = Double.valueOf(atitude.split(",")[0]);
+            latitude = Double.valueOf(atitude.split(",")[0]);
+            longitude = Double.valueOf(atitude.split(",")[1]);
         }catch(IOException e) {
-
+            Log.d("ceshi1", e.toString());
         }
     }
 

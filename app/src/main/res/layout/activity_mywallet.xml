@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#FFFFFF"
-        android:text="我的钱包"
+        android:text="My wallet"
         android:textSize="25sp"
         android:textColor="#000000"
         android:gravity="center" />
@@ -15,13 +15,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="我的资产"
+        android:text="  My Assets"
         android:textSize="23sp"
         android:gravity="center_vertical"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="账户余额"
+        android:text="  Account balance"
         android:drawableLeft="@mipmap/yue"
         android:textSize="15sp"
         android:gravity="center_vertical"/>
@@ -31,7 +31,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="我的积分"
+        android:text="  My points"
         android:drawableLeft="@mipmap/jifen"
         android:textSize="15sp"
         android:gravity="center_vertical"/>
@@ -41,7 +41,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="我的卡券"
+        android:text="  My card voucher"
         android:drawableLeft="@mipmap/kaquan"
         android:textSize="15sp"
         android:gravity="center_vertical"/>

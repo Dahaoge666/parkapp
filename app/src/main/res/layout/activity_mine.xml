@@ -25,7 +25,7 @@
         android:id="@+id/time_place_picker"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text=" 时间地点选择"
+        android:text=" Select Time and Position"
         android:drawableLeft="@mipmap/dingdan1"
         android:textSize="25sp"
         android:gravity="center_vertical"/>
@@ -39,7 +39,7 @@
         android:id="@+id/mybook"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text=" 我的预约"
+        android:text=" My Reserve"
         android:drawableLeft="@mipmap/dingdan1"
         android:textSize="25sp"
         android:gravity="center_vertical"/>
@@ -49,7 +49,7 @@
         android:id="@+id/mywallet"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text=" 我的钱包"
+        android:text=" My Wallet"
         android:textSize="25sp"
         android:drawableLeft="@mipmap/qianbao"
         android:gravity="center_vertical"/>
@@ -59,19 +59,19 @@
         android:id="@+id/introduct"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text=" 操作说明"
+        android:text=" Introduction"
         android:textSize="25sp"
         android:drawableLeft="@mipmap/shuoming"
         android:gravity="center_vertical"/>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text=" 退出"
-        android:textSize="25sp"
-        android:drawableLeft="@mipmap/tuichu"
-        android:gravity="center_vertical"/>
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:text=" Leave"-->
+<!--        android:textSize="25sp"-->
+<!--        android:drawableLeft="@mipmap/tuichu"-->
+<!--        android:gravity="center_vertical"/>-->
 
 
 

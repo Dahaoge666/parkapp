@@ -28,6 +28,7 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.example.parkapp.Bean.MyBookBean;
 import com.example.parkapp.Thread.ReserveThread;
 
 import overlayutil.DrivingRouteOverlay;
@@ -43,7 +44,7 @@ public class Parking extends Activity {
         setContentView(R.layout.activity_parking);
 
 
-
+        final MyBookBean myBookBean = new MyBookBean();
         //获取地图控件引用
         mMapView = findViewById(R.id.mapViewBook);
         mBaiduMap = mMapView.getMap();
@@ -51,7 +52,7 @@ public class Parking extends Activity {
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
         builder.zoom(14.0f);
-        LatLng parkPosition = new LatLng(22.493113,113.948789);
+        LatLng parkPosition = new LatLng(myBookBean.destinationLatitude,myBookBean.destinationLongitude);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -63,38 +64,21 @@ public class Parking extends Activity {
                 .alpha(0.8f);
         mBaiduMap.addOverlay(markOption);
 
-        //定义Maker坐标点
-        LatLng point = new LatLng(22.525269, 113.937374);
-//构建Marker图标
-        BitmapDescriptor bitmap1 = BitmapDescriptorFactory
-                .fromResource(R.drawable.park_icon);
-//构建MarkerOption，用于在地图上添加Marker
-        OverlayOptions option = new MarkerOptions()
-                .position(point) //必传参数
-                .icon(bitmap1) ;//必传参数
-//在地图上添加Marker，并显示
-        mBaiduMap.addOverlay(option);
 
-        final Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
-        final Double latitude = intent.getDoubleExtra("latitude",0);
-        final Double longitude = intent.getDoubleExtra("longitude",0);
-        final String name = intent.getStringExtra("name");
-        final String type = intent.getStringExtra("type");
-        final String destination = intent.getStringExtra("destination");
+//        final Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
+//        final Double latitude = intent.getDoubleExtra("latitude",0);
+//        final Double longitude = intent.getDoubleExtra("longitude",0);
+//        final String name = intent.getStringExtra("name");
+//        final String type = intent.getStringExtra("type");
+//        final String destination = intent.getStringExtra("destination");
 
-        final ReserveThread reserveThread = new ReserveThread("");
-        try {
-            reserveThread.start();
-            reserveThread.join();
-        } catch (Exception e) {
-            System.out.println("Exception from main");
-        }
-
+        TextView park = findViewById(R.id.park);
+        park.setText(myBookBean.parkName);
         TextView travelTime = findViewById(R.id.travelTime);
-        travelTime.setText(reserveThread.time_use);
+        travelTime.setText(myBookBean.travelTime);
         TextView parkingOccupancy = findViewById(R.id.parkingOccupancy);
-        parkingOccupancy.setText(reserveThread.occupy+"/"+reserveThread.capacity);
-        final String price_info = reserveThread.price_info;
+        parkingOccupancy.setText(myBookBean.parkingOccupancy);
+        final String price_info = myBookBean.priceInfo;
         Button info = findViewById(R.id.info);
         info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,25 +91,17 @@ public class Parking extends Activity {
 
 
         final Button change = findViewById(R.id.change);
-        if (type.equals( "change")){
-            change.setVisibility(View.VISIBLE);
-        }
+
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i1 = new Intent();
-                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+reserveThread.name+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+myBookBean.parkName+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
                 try {
                     startActivity(i1);
                 }catch (Exception e){
                     Toast.makeText(Parking.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
-
-
-                if (type.equals( "change")){
-                    change.setVisibility(View.GONE);
-                }
-
 
             }
         });
@@ -197,28 +173,19 @@ public class Parking extends Activity {
             }
         };
         mSearch.setOnGetRoutePlanResultListener(listener);
-        //按钮触发器
-        Button road = findViewById(R.id.road);
-        road.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PlanNode stNode = PlanNode.withCityNameAndPlaceName("深圳", name);
-                PlanNode enNode = PlanNode.withCityNameAndPlaceName("深圳", reserveThread.name);
-                try {
-                    mSearch.drivingSearch((new DrivingRoutePlanOption())
-                            .from(stNode)
-                            .to(enNode));
-                    mSearch.destroy();
-                }catch (Exception e){
-                    stNode = PlanNode.withCityNameAndPlaceName("深圳", "文心二路");
-                    enNode = PlanNode.withCityNameAndPlaceName("深圳", "东角头");
-                    mSearch.drivingSearch((new DrivingRoutePlanOption())
-                            .from(stNode)
-                            .to(enNode));
-                    mSearch.destroy();
-                }
-            }
-        });
+
+        LatLng start = new LatLng(myBookBean.currentLatitude,myBookBean.currentLongitude);
+        LatLng end = new LatLng(myBookBean.parkLatitude,myBookBean.parkLongitude);
+        PlanNode stNode = PlanNode.withLocation(start);
+        PlanNode enNode = PlanNode.withLocation(end);
+        try {
+            mSearch.drivingSearch((new DrivingRoutePlanOption())
+                    .from(stNode)
+                    .to(enNode));
+            mSearch.destroy();
+        }catch (Exception e){
+            Toast.makeText(Parking.this,"无法规划路线",Toast.LENGTH_SHORT);
+        }
     }
     @Override
     protected void onResume() {

@@ -21,7 +21,7 @@ public class NormalBean {
     private String atitude;
     private String price_info;
     private String time_use;
-    private int distance;
+    private Double distance;
     private String star;
 
     public String getName() {
@@ -80,11 +80,11 @@ public class NormalBean {
         this.time_use = time_use;
     }
 
-    public int getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 

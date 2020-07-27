@@ -1,8 +1,11 @@
 package com.example.parkapp.Thread;
 
+import android.util.Log;
+
 import com.example.parkapp.Bean.PredictBean;
 import com.example.parkapp.GsonUtils;
-import com.example.parkapp.OkHttp;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,11 +24,13 @@ public class PredictThread extends Thread {
     }
 
     public void run() {
-        OkHttp http = new OkHttp();
         GsonUtils gsonUtils = new GsonUtils();
         try {
-            String responseData = http.run("http://mock-api.com/NnQ0W5gY.mock/predict"+params);
-            PredictBean predictBean = gsonUtils.parserJsonToPredictData(responseData);
+            Document doc = Jsoup.connect("http://182.92.219.51:8000/predict/"+params).get();
+            Log.d("ceshi1", params);
+            String body = doc.body().text();
+            Log.d("ceshi1", body);
+            PredictBean predictBean = gsonUtils.parserJsonToPredictData(body);
             capacity = predictBean.getCapacity();
             occupy = predictBean.getOccupy();
             remain = predictBean.getRemain();
@@ -34,7 +39,7 @@ public class PredictThread extends Thread {
             latitude = Double.valueOf(atitude.split(",")[1]);
             longitude = Double.valueOf(atitude.split(",")[0]);
         }catch(IOException e) {
-
+            Log.d("ceshi1", e.toString());
         }
     }
 

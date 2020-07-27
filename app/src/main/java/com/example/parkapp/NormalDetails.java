@@ -26,6 +26,7 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.example.parkapp.Bean.MyBookBean;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -53,9 +54,50 @@ public class NormalDetails extends AppCompatActivity {
         final Double latitude=intent.getDoubleExtra("latitude",0);
         final Double longitude=intent.getDoubleExtra("longitude",0);
         final Integer capacity=intent.getIntExtra("capacity",0);
+        final Integer occupy=intent.getIntExtra("occupy",0);
         final Double distance=intent.getDoubleExtra("distance",0);
-        final String time=intent.getStringExtra("time");
+        final String time_use=intent.getStringExtra("time_use");
         final String price_info = intent.getStringExtra("price_info");
+
+        MyBookBean myBookBean = new MyBookBean();
+        //设置路线规划的监听器
+        final RoutePlanSearch mSearch = RoutePlanSearch.newInstance();
+        OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+            @Override
+            public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
+
+            }
+
+            @Override
+            public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+
+            }
+
+            @Override
+            public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
+
+            }
+
+            @Override
+            public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+                DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap);
+                if (drivingRouteResult.getRouteLines().size() > 0) {
+                    overlay.setData(drivingRouteResult.getRouteLines().get(0));
+                    overlay.addToMap();
+                }
+            }
+
+            @Override
+            public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
+
+            }
+
+            @Override
+            public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+
+            }
+        };
+        mSearch.setOnGetRoutePlanResultListener(listener);
 
 
 //        longBookBack=findViewById(R.id.longBookBack)
@@ -66,7 +108,7 @@ public class NormalDetails extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
         builder.zoom(16.0f);
-        LatLng parkPosition = new LatLng(latitude,longitude);
+        LatLng parkPosition = new LatLng(myBookBean.destinationLatitude,myBookBean.destinationLongitude);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -76,30 +118,27 @@ public class NormalDetails extends AppCompatActivity {
                 .perspective(true)
                 .icon(bitmap);
         mBaiduMap.addOverlay(markOption);
-
-
-
-        //定义Maker坐标点
-        LatLng point = new LatLng(22.525269, 113.937374);
-//构建Marker图标
-        BitmapDescriptor bitmap1 = BitmapDescriptorFactory
-                .fromResource(R.drawable.park_icon);
-//构建MarkerOption，用于在地图上添加Marker
-        OverlayOptions option = new MarkerOptions()
-                .position(point) //必传参数
-                .icon(bitmap1) ;//必传参数
-//在地图上添加Marker，并显示
-        mBaiduMap.addOverlay(option);
-
+        LatLng currentPoint = new LatLng(myBookBean.currentLatitude, myBookBean.currentLongitude);
+        LatLng point = new LatLng(latitude,longitude);
+        PlanNode stNode = PlanNode.withLocation(currentPoint);
+        PlanNode enNode = PlanNode.withLocation(point);
+        try {
+            mSearch.drivingSearch((new DrivingRoutePlanOption())
+                    .from(stNode)
+                    .to(enNode));
+            mSearch.destroy();
+        }catch (Exception e){
+            Toast.makeText(NormalDetails.this,"无法规划路线",Toast.LENGTH_SHORT);
+        }
 
 
         TextView parkName = findViewById(R.id.parkName);
         parkName.setText(name);
 
         TextView parkCapacity = findViewById(R.id.parkCapacity);
-        parkCapacity.setText(capacity.intValue()+"");
+        parkCapacity.setText(occupy.intValue()+"/"+capacity.intValue());
         TextView parkDistance = findViewById(R.id.parkDistance);
-        parkDistance.setText(distance+"米");
+        parkDistance.setText(time_use);
 
         findViewById(R.id.info).setOnClickListener(new View.OnClickListener() {
             @Override

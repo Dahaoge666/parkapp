@@ -20,7 +20,7 @@ public class ReserveBean {
     private String atitude;
     private String price_info;
     private String time_use;
-    private int distance;
+    private Double distance;
 
     public String getName() {
         return name;
@@ -78,11 +78,11 @@ public class ReserveBean {
         this.time_use = time_use;
     }
 
-    public int getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 }

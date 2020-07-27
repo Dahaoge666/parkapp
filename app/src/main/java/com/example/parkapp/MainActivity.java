@@ -45,16 +45,18 @@ import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.example.parkapp.Bean.MyBookBean;
 import com.example.parkapp.Bean.ParkdataBean;
 import com.example.parkapp.Thread.*;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends Activity {
+    MyBookBean myBookBean = new MyBookBean();
     private MapView mMapView = null;
     private BaiduMap mBaiduMap = null;
     public LocationClient mLocationClient = null;;
@@ -84,6 +86,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        InitThread initThread = new InitThread();
+        try {
+            initThread.start();
+            initThread.join();
+        } catch (Exception e) {
+            Log.d("ceshi1", e.toString());
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
@@ -108,6 +119,11 @@ public class MainActivity extends Activity {
             text_minute=""+m_minute;
         }
         text2.setText(text_hour + ":" + text_minute);
+
+
+
+
+
     }
 
     //初始化
@@ -181,16 +197,6 @@ public class MainActivity extends Activity {
     }
 
     private void initSQL(){
-        DataBaseUtil util = new DataBaseUtil(this);
-        if (!util.checkDataBase()) {
-            try {
-                util.copyDataBase();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        db=SQLiteDatabase.openOrCreateDatabase("/data/data/com.example.parkapp/databases/parkingdb.db",null);
-
         markSingleHandler();
         mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -198,12 +204,13 @@ public class MainActivity extends Activity {
             public boolean onMarkerClick(Marker marker) {
 
                 final String name = marker.getExtraInfo().getString("name");
-                PredictThread predictThread = new PredictThread("");
+                Log.d("ceshi1",name);
+                PredictThread predictThread = new PredictThread(name);
                 try {
                     predictThread.start();
                     predictThread.join();
                 } catch (Exception e) {
-                    System.out.println("Exception from main");
+                    Log.d("ceshi1", e.toString());
                 }
 
                 if (name!=""){
@@ -276,12 +283,11 @@ public class MainActivity extends Activity {
                 }
 
                 Intent intent = new Intent(MainActivity.this, Reserve.class);
-
                 intent.putExtra("destination",search.getText());
-                intent.putExtra("name","文心二路");
-                intent.putExtra("longitude",113.937374);
-                intent.putExtra("latitude",22.525269);
-                intent.putExtra("change",1);
+                intent.putExtra("historyName",historyName);
+                intent.putExtra("historyLatitude",historyLatitude);
+                intent.putExtra("historyLongitude",historyLongitude);
+                intent.putExtra("type","reserve");
                 startActivity(intent);
             }
         });
@@ -298,8 +304,9 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(MainActivity.this, Normal.class);
                 intent.putExtra("destination",search.getText());
                 intent.putExtra("name",historyName);
-                intent.putExtra("latitude",historyLatitude);
-                intent.putExtra("longitude",historyLongitude);
+                intent.putExtra("historyLatitude",historyLatitude);
+                intent.putExtra("historyLongitude",historyLongitude);
+                intent.putExtra("type","normal");
                 startActivity(intent);
             }
         });
@@ -313,9 +320,10 @@ public class MainActivity extends Activity {
 
         final EditText search = findViewById(R.id.search);
         final List<String> lists = new ArrayList<String>();
-        lists.add("文心公园");
-        lists.add("深圳大学");
-        lists.add("深圳动漫园");
+        lists.add("海岸城");
+        lists.add("麦当劳(南山海岸城餐厅)");
+        lists.add("大疆体验店");
+        lists.add("正夫口腔");
         final ListPopupWindow mListPop = new ListPopupWindow(this);
         mListPop.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lists));
         mListPop.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -335,15 +343,25 @@ public class MainActivity extends Activity {
                 mListPop.dismiss();
                 switch (position){
                     case 0:
-                        historyLongitude=113.936811;
-                        historyLatitude=22.526892;
+                        historyLongitude=113.944145;
+                        historyLatitude=22.523768;
+                        break;
                     case 1:
-                        historyLongitude=113.942651;
-                        historyLatitude=22.53945;
+                        historyLongitude=113.941351;
+                        historyLatitude=22.523518;
+                        break;
                     case 2:
-                        historyLongitude=113.930257;
-                        historyLatitude=22.515024;
+                        historyLongitude=113.946053;
+                        historyLatitude=22.522971;
+                        break;
+                    case 3:
+                        historyLongitude=113.940008;
+                        historyLatitude=22.523618;
+                        break;
                 }
+
+                myBookBean.destinationLatitude = historyLatitude;
+                myBookBean.destinationLongitude = historyLongitude;
             }
         });
         search.setOnClickListener(new View.OnClickListener() {
@@ -444,7 +462,7 @@ public class MainActivity extends Activity {
 
         //默认折线图,即直接调用下面四句话
         final LineChart chart = (LineChart) popupWindow.getContentView().findViewById(R.id.bar_chart); //获取画布
-        final LineCharts lineCharts = new LineCharts(chart); //创建折线图对象
+        final LineCharts lineCharts = new LineCharts(chart, capacity); //创建折线图对象
         LineData mLineData = lineCharts.getLineData(name, capacity, remain, predict); //初始化折线图数据，数据有几个
         chart.setData(mLineData); //显示数据
     }
@@ -514,24 +532,22 @@ public class MainActivity extends Activity {
                 if (currentLatitude>22.27&&currentLatitude<22.52&&currentLongitude>113.46&&currentLongitude<114.37){
                     currentPosition = new LatLng(currentLatitude,currentLongitude);
                 }else{
-                    currentPosition = new LatLng(22.525269,113.938);
-
-
-                        Log.d("location111", "sure: ");
-                        LatLng point = new LatLng(22.525269,113.938);
-                        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.circle);
+                    currentPosition = new LatLng(myBookBean.currentLatitude,myBookBean.currentLongitude);
+                    Log.d("location111", "sure: ");
+                    LatLng point = new LatLng(myBookBean.currentLatitude,myBookBean.currentLongitude);
+                    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.circle);
                     Bundle mBundle = new Bundle();
                     mBundle.putString("name","");
                     mBundle.putDouble("latitude",0.0);
                     mBundle.putDouble("longitude",0.0);
                     mBundle.putInt("capacity",0);
-                        OverlayOptions markOption = new MarkerOptions()
-                                .position(point)
-                                .perspective(true)
-                                .alpha(10)
-                                .extraInfo(mBundle)
-                                .icon(bitmap);
-                        mBaiduMap.addOverlay(markOption);
+                    OverlayOptions markOption = new MarkerOptions()
+                            .position(point)
+                            .perspective(true)
+                            .alpha(10)
+                            .extraInfo(mBundle)
+                            .icon(bitmap);
+                    mBaiduMap.addOverlay(markOption);
 
                 }
                 builder.target(currentPosition);

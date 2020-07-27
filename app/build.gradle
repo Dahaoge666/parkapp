@@ -44,4 +44,5 @@ dependencies {
     implementation files('libs/mpandroidchartlibrary-2-1-6.jar')
     implementation("com.squareup.okhttp3:okhttp:4.8.0")
     implementation 'com.google.code.gson:gson:2.6.2'
+    implementation 'org.jsoup:jsoup:1.9.2'
 }

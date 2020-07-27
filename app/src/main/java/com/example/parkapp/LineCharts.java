@@ -1,23 +1,30 @@
 package com.example.parkapp;
 
 import android.graphics.Color;
+
+import com.example.parkapp.Bean.MyBookBean;
+import com.example.parkapp.Thread.InitThread;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class LineCharts {
 
-    public LineCharts(LineChart mLineChart) {
+    public LineCharts(LineChart mLineChart, Integer capacity) {
         mLineChart.setDrawBorders(false);
         mLineChart.setDescription("");// 数据描述
         mLineChart.setNoDataTextDescription("暂无数据");
@@ -39,6 +46,9 @@ public class LineCharts {
         mLineChart.getXAxis().setPosition(XAxisPosition.BOTTOM); // 让x轴在下面
         mLineChart.getAxisRight().setDrawGridLines(false);
 
+        YAxis leftAxis = mLineChart.getAxisLeft();
+        leftAxis.setAxisMaxValue(capacity+1);
+        leftAxis.setAxisMinValue(0);
     }
 
     public LineData getLineData(String name, int capacity, int remain, List<Integer> predict) {
@@ -47,9 +57,10 @@ public class LineCharts {
         y_use.add(new Entry(remain, 0));
         int i=1;
         for (Integer val:predict) {
-            i++;
+
             Entry entry = new Entry(val, i);
             y_use.add(entry);
+            i++;
         }
 
         LineDataSet mLineDataSet_use = new LineDataSet(y_use, "Num of vacant spots");
@@ -86,8 +97,16 @@ public class LineCharts {
 
 
     public ArrayList<String> getXAxisValues() {
+        Date date = new Date();
+        try {
+        MyBookBean myBookBean = new MyBookBean();
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+
+            date =sdf.parse(myBookBean.time);
+        }catch (Exception e){}
         ArrayList<String> xAxis = new ArrayList<String>();
         Calendar time = Calendar.getInstance();
+        time.setTime(date);
         xAxis.add(time.get(Calendar.HOUR)+":"+String.format("%02d",time.get(Calendar.MINUTE)));
         int i = 0;
         for(;i<12;i++){
