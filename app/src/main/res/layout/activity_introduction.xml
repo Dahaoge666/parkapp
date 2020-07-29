@@ -7,14 +7,23 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorGreen"
-        android:text="用户操作指南"
-        android:textSize="20sp"
-        android:textColor="#FFFFFF"
+        android:text="Introduction"
+        android:textSize="30sp"
+        android:textColor="#000000"
         android:gravity="center" />
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
         android:id="@+id/imageView"
         android:src="@mipmap/tu1"/>
-
+    <Button
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="跳过指南"
+        android:textSize="30sp"
+        android:textColor="#000000"
+        android:background="#FFFFFF"/>
 </LinearLayout>

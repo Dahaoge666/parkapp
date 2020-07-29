@@ -24,8 +24,15 @@
         android:roundIcon="@mipmap/hongyan"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Selection"></activity>
-        <activity android:name=".Introduction" />
+        <activity android:name=".Introduction">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Selection" />
+        <activity android:name=".Introduction1" />
         <activity android:name=".Parking" />
         <activity android:name=".PriceInfo" />
         <activity android:name=".Mywallet" />

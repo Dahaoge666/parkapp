@@ -52,7 +52,7 @@ public class Selection extends Activity {
         mBaiduMap.setMyLocationEnabled(true);
         builder = new MapStatus.Builder();
         builder.zoom(16.0f);
-        final LatLng parkPosition = new LatLng(22.525269,113.937374);
+        final LatLng parkPosition = new LatLng(22.585269,113.937374);
         builder.target(parkPosition);
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         final BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -71,9 +71,9 @@ public class Selection extends Activity {
 
 
         Calendar startDate = Calendar.getInstance();
-        startDate.set(2018,11,11);
+        startDate.set(2018,12,11);
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2018,11,18);
+        endDate.set(2019,1,1);
         final TimePickerView pvTime = new TimePickerBuilder(Selection.this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {

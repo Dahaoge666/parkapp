@@ -65,6 +65,52 @@ public class Parking extends Activity {
         mBaiduMap.addOverlay(markOption);
 
 
+        //设置路线规划的监听器
+        final RoutePlanSearch mSearch = RoutePlanSearch.newInstance();
+        OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+            @Override
+            public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
+
+            }
+
+            @Override
+            public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+
+            }
+
+            @Override
+            public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
+
+            }
+
+            @Override
+            public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+                //创建DrivingRouteOverlay实例
+                DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap);
+                if (drivingRouteResult.getRouteLines().size() > 0) {
+                    //获取路径规划数据,(以返回的第一条路线为例）
+                    //为DrivingRouteOverlay实例设置数据
+                    overlay.setData(drivingRouteResult.getRouteLines().get(0));
+                    //在地图上绘制DrivingRouteOverlay
+                    overlay.addToMap();
+                    Integer travel_time = drivingRouteResult.getRouteLines().get(0).getDuration();
+                    TextView travelTime = findViewById(R.id.travelTime);
+                    travelTime.setText(travel_time/60+"minutes");
+                }
+            }
+
+            @Override
+            public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
+
+            }
+
+            @Override
+            public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+
+            }
+        };
+        mSearch.setOnGetRoutePlanResultListener(listener);
+
 //        final Intent intent = getIntent();//声明一个对象，并获得跳转过来的Intent对象
 //        final Double latitude = intent.getDoubleExtra("latitude",0);
 //        final Double longitude = intent.getDoubleExtra("longitude",0);
@@ -74,8 +120,6 @@ public class Parking extends Activity {
 
         TextView park = findViewById(R.id.park);
         park.setText(myBookBean.parkName);
-        TextView travelTime = findViewById(R.id.travelTime);
-        travelTime.setText(myBookBean.travelTime);
         TextView parkingOccupancy = findViewById(R.id.parkingOccupancy);
         parkingOccupancy.setText(myBookBean.parkingOccupancy);
         final String price_info = myBookBean.priceInfo;
@@ -110,6 +154,7 @@ public class Parking extends Activity {
         findViewById(R.id.cancelButon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                myBookBean.parkName = "";
                 Intent intent = new Intent(Parking.this,MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();
@@ -131,48 +176,7 @@ public class Parking extends Activity {
 
 
 
-        //设置路线规划的监听器
-        final RoutePlanSearch mSearch = RoutePlanSearch.newInstance();
-        OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
-            @Override
-            public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
 
-            }
-
-            @Override
-            public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
-
-            }
-
-            @Override
-            public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
-
-            }
-
-            @Override
-            public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-                //创建DrivingRouteOverlay实例
-                DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap);
-                if (drivingRouteResult.getRouteLines().size() > 0) {
-                    //获取路径规划数据,(以返回的第一条路线为例）
-                    //为DrivingRouteOverlay实例设置数据
-                    overlay.setData(drivingRouteResult.getRouteLines().get(0));
-                    //在地图上绘制DrivingRouteOverlay
-                    overlay.addToMap();
-                }
-            }
-
-            @Override
-            public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
-
-            }
-
-            @Override
-            public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
-
-            }
-        };
-        mSearch.setOnGetRoutePlanResultListener(listener);
 
         LatLng start = new LatLng(myBookBean.currentLatitude,myBookBean.currentLongitude);
         LatLng end = new LatLng(myBookBean.parkLatitude,myBookBean.parkLongitude);

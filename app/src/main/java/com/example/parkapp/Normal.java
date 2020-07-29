@@ -57,7 +57,7 @@ public class Normal extends Activity {
         final Double historyLongitude = intent.getDoubleExtra("historyLongitude",0);
         final String type=intent.getStringExtra("type");
 
-        MyBookBean myBookBean = new MyBookBean();
+        final MyBookBean myBookBean = new MyBookBean();
 
 
 
@@ -153,7 +153,8 @@ public class Normal extends Activity {
                 i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+normalBean[0].getName()+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
                 try {
                     startActivity(i1);
-                    initNotify(destination,name,historyLatitude,historyLongitude );
+                    if(type.equals("normal")){
+                        initNotify(destination,name,historyLatitude,historyLongitude );}
                 }catch (Exception e){
                     Toast.makeText(Normal.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
@@ -162,6 +163,7 @@ public class Normal extends Activity {
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                myBookBean.parkName = "";
                 Intent intent = new Intent(Normal.this,MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();

@@ -5,10 +5,10 @@
     android:orientation="vertical" >
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#FFFFFF"
-        android:text="My wallet"
-        android:textSize="25sp"
+        android:layout_height="60dp"
+        android:background="@color/colorGreen"
+        android:text="My Wallet"
+        android:textSize="30sp"
         android:textColor="#000000"
         android:gravity="center" />
 

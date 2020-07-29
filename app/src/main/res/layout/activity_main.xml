@@ -13,27 +13,32 @@
 
         <TextView
             android:id="@+id/mine"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
-            android:layout_weight="1"
             android:text="@string/user"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#6EC3AF"
             android:textSize="60sp" />
-        <!--android:layout_marginLeft="50dp"-->
-        <EditText
-            android:id="@+id/search"
 
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_weight="7"
-            android:hint="Please enter your destination"
-            android:textSize="20sp"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:textColorHint="#95A1AA" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Please enter your destination"
+            android:textColor="#000000"
+            android:textSize="23sp"
+            android:gravity="center_vertical" />
+        </LinearLayout>
+
         <!--<Button-->
             <!--android:id="@+id/history"-->
             <!--android:background="@null"-->

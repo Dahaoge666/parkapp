@@ -60,7 +60,7 @@ public class Reserve extends AppCompatActivity {
         final Double historyLongitude = intent.getDoubleExtra("historyLongitude",0);
         final String type = intent.getStringExtra("type");
 
-        MyBookBean myBookBean = new MyBookBean();
+        final MyBookBean myBookBean = new MyBookBean();
 
 
         //设置路线规划的监听器
@@ -87,6 +87,9 @@ public class Reserve extends AppCompatActivity {
                 if (drivingRouteResult.getRouteLines().size() > 0) {
                     overlay.setData(drivingRouteResult.getRouteLines().get(0));
                     overlay.addToMap();
+                    Integer travel_time = drivingRouteResult.getRouteLines().get(0).getDuration();
+                    TextView travelTime = findViewById(R.id.travelTime);
+                    travelTime.setText(travel_time/60+"minutes");
                 }
             }
 
@@ -148,8 +151,7 @@ public class Reserve extends AppCompatActivity {
 
         TextView park = findViewById(R.id.park);
         park.setText(reserveThread.name);
-        TextView travelTime = findViewById(R.id.travelTime);
-        travelTime.setText(reserveThread.time_use);
+
         TextView parkingOccupancy = findViewById(R.id.parkingOccupancy);
         parkingOccupancy.setText(reserveThread.occupy+"/"+reserveThread.capacity);
         final String price_info = reserveThread.price_info;
@@ -176,7 +178,8 @@ public class Reserve extends AppCompatActivity {
                 i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+reserveThread.name+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
                 try {
                     startActivity(i1);
-                    initNotify(destination,historyLatitude,historyLongitude,historyName);
+                    if(type.equals("reserve")){
+                    initNotify(destination,historyLatitude,historyLongitude,historyName);}
                 }catch (Exception e){
                     Toast.makeText(Reserve.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
                 }
@@ -185,6 +188,7 @@ public class Reserve extends AppCompatActivity {
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                myBookBean.parkName = "";
                 Intent intent = new Intent(Reserve.this,MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();

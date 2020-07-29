@@ -84,6 +84,9 @@ public class NormalDetails extends AppCompatActivity {
                 if (drivingRouteResult.getRouteLines().size() > 0) {
                     overlay.setData(drivingRouteResult.getRouteLines().get(0));
                     overlay.addToMap();
+                    Integer travel_time = drivingRouteResult.getRouteLines().get(0).getDuration();
+                    TextView parkDistance = findViewById(R.id.parkDistance);
+                    parkDistance.setText(travel_time/60+"minutes");
                 }
             }
 
@@ -136,9 +139,8 @@ public class NormalDetails extends AppCompatActivity {
         parkName.setText(name);
 
         TextView parkCapacity = findViewById(R.id.parkCapacity);
-        parkCapacity.setText(occupy.intValue()+"/"+capacity.intValue());
-        TextView parkDistance = findViewById(R.id.parkDistance);
-        parkDistance.setText(time_use);
+        parkCapacity.setText(occupy+"/"+capacity);
+
 
         findViewById(R.id.info).setOnClickListener(new View.OnClickListener() {
             @Override

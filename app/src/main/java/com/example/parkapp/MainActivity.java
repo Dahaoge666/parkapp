@@ -275,9 +275,8 @@ public class MainActivity extends Activity {
         findViewById(R.id.shortbook).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText search = findViewById(R.id.search);
-                Log.d("search", "onClick: "+search.getText().toString());
-                if (TextUtils.isEmpty(search.getText())){
+                TextView search = findViewById(R.id.search);
+                if (search.getText().equals("Please enter your destination")){
                     Toast.makeText(getApplicationContext(),"Please enter your destination",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -295,9 +294,8 @@ public class MainActivity extends Activity {
         findViewById(R.id.longbook).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText search = findViewById(R.id.search);
-                Log.d("search", "onClick: "+search.getText().toString());
-                if (TextUtils.isEmpty(search.getText())){
+                TextView search = findViewById(R.id.search);
+                if (search.getText().equals("Please enter your destination")){
                     Toast.makeText(getApplicationContext(),"Please enter your destination",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -318,7 +316,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        final EditText search = findViewById(R.id.search);
+        final TextView search = findViewById(R.id.search);
         final List<String> lists = new ArrayList<String>();
         lists.add("海岸城");
         lists.add("麦当劳(南山海岸城餐厅)");

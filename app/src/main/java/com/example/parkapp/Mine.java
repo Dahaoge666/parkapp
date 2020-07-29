@@ -68,7 +68,7 @@ public class Mine extends AppCompatActivity {
         introduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i1 = new Intent(Mine.this, Introduction.class);
+                Intent i1 = new Intent(Mine.this, Introduction1.class);
                 startActivity(i1);
             }
         });

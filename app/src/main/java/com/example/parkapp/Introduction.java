@@ -1,9 +1,14 @@
 package com.example.parkapp;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,8 +36,17 @@ public class Introduction extends Activity {
 
         iv = (ImageView)findViewById(R.id.imageView);        //获取ImageView控件id
         gestureDetector = new GestureDetector(onGestureListener);  //设置手势监听由onGestureListener处理
+        Button back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent intent = new Intent(Introduction.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
 
     //当Activity被触摸时回调
     public boolean onTouchEvent(MotionEvent event){
@@ -49,6 +63,11 @@ public class Introduction extends Activity {
             //通过计算判断是向左还是向右滑动
             if(x < 0){
                 count++;
+                if(count==resId.length){
+                    Intent intent = new Intent(Introduction.this,MainActivity.class);
+                    startActivity(intent);
+                    count--;
+                }
                 count%=(resId.length);    //想显示多少图片，就把定义图片的数组长度-1
             }else if(x > 0){
                 count--;
