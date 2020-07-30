@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
             public void onGetPoiResult(PoiResult res) {
 
                 if (res == null || res.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
-                    Toast.makeText(MainActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "No results were found.", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (res.error == SearchResult.ERRORNO.NO_ERROR) {

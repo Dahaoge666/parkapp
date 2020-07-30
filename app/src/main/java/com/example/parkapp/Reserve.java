@@ -27,7 +27,10 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.baidu.mapapi.utils.route.BaiduMapRoutePlan;
+import com.baidu.mapapi.utils.route.RouteParaOption;
 import com.example.parkapp.Bean.MyBookBean;
+import com.example.parkapp.Thread.NormalThread;
 import com.example.parkapp.Thread.ReserveThread;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -89,7 +92,7 @@ public class Reserve extends AppCompatActivity {
                     overlay.addToMap();
                     Integer travel_time = drivingRouteResult.getRouteLines().get(0).getDuration();
                     TextView travelTime = findViewById(R.id.travelTime);
-                    travelTime.setText(travel_time/60+"minutes");
+                    travelTime.setText(travel_time/60+" minutes");
                 }
             }
 
@@ -106,9 +109,13 @@ public class Reserve extends AppCompatActivity {
         mSearch.setOnGetRoutePlanResultListener(listener);
 
         final Button roadBook1 = findViewById(R.id.roadBook1);
+        final ReserveThread reserveThread;
+        if(type.equals("reserve")){
+            reserveThread = new ReserveThread("reserve/"+historyLongitude+"/"+historyLatitude+"/"+type);}
+        else {
+            reserveThread = new ReserveThread("changeDisplay");
+        }
 
-
-        final ReserveThread reserveThread = new ReserveThread("/"+historyLongitude+"/"+historyLatitude+"/"+type);
         try {
             reserveThread.start();
             reserveThread.join();
@@ -146,7 +153,7 @@ public class Reserve extends AppCompatActivity {
                     .to(enNode));
             mSearch.destroy();
         }catch (Exception e){
-            Toast.makeText(Reserve.this,"无法规划路线",Toast.LENGTH_SHORT);
+            Toast.makeText(Reserve.this,"The route cannot be planned.",Toast.LENGTH_SHORT);
         }
 
         TextView park = findViewById(R.id.park);
@@ -173,16 +180,33 @@ public class Reserve extends AppCompatActivity {
         roadBook1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i1 = new Intent();
-                j = true;
-                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+reserveThread.name+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+
+                LatLng startPoint = new LatLng(myBookBean.currentLatitude, myBookBean.currentLongitude);
+                LatLng endPoint = new LatLng(myBookBean.parkLatitude, myBookBean.parkLongitude);
+                RouteParaOption paraOption = new RouteParaOption()
+                        .startPoint(startPoint)
+                        .endPoint(endPoint);
                 try {
-                    startActivity(i1);
+                    BaiduMapRoutePlan.openBaiduMapDrivingRoute(paraOption, Reserve.this);
                     if(type.equals("reserve")){
                     initNotify(destination,historyLatitude,historyLongitude,historyName);}
-                }catch (Exception e){
-                    Toast.makeText(Reserve.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(Reserve.this,"Please install the Baidu Map for navigation.",Toast.LENGTH_SHORT).show();
                 }
+                BaiduMapRoutePlan.finish(Reserve.this);
+
+
+//                Intent i1 = new Intent();
+//                j = true;
+//                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin="+myBookBean.currentLatitude+","+myBookBean.currentLongitude+"&destination="+"深圳市"+reserveThread.name+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+//                try {
+//                    startActivity(i1);
+//                    if(type.equals("reserve")){
+//                    initNotify(destination,historyLatitude,historyLongitude,historyName);}
+//                }catch (Exception e){
+//                    Toast.makeText(Reserve.this,"Please install the Baidu Map for navigation.",Toast.LENGTH_SHORT).show();
+//                }
             }
         });
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
@@ -191,7 +215,7 @@ public class Reserve extends AppCompatActivity {
                 myBookBean.parkName = "";
                 Intent intent = new Intent(Reserve.this,MainActivity.class);
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"The cancellation was successful.",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -228,14 +252,25 @@ public class Reserve extends AppCompatActivity {
         intent.putExtra("historyName",historyName);
         intent.putExtra("historyLatitude",historyLatitude);
         intent.putExtra("historyLongitude",historyLongitude);
-        intent.putExtra("type","change");
+        intent.putExtra("type","changeDisplay");
 
         PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationChannel mChannel = new NotificationChannel(id, "提示", NotificationManager.IMPORTANCE_LOW);
+
+
+
+
+        final ReserveThread reserveThread1 = new ReserveThread("reserve/"+historyLongitude+"/"+historyLatitude+"/"+"change");
+        try {
+            reserveThread1.start();
+            reserveThread1.join();
+        } catch (Exception e) {
+            System.out.println("Exception from main");
+        }
+        NotificationChannel mChannel = new NotificationChannel(id, "Tips", NotificationManager.IMPORTANCE_LOW);
         notificationManager.createNotificationChannel(mChannel);
         notification = new Notification.Builder(this,"default")
                 .setChannelId(id)
-                .setContentTitle("Better parking spot is detected")
+                .setContentTitle("Better parking spot is detected:"+reserveThread1.name)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.hongyan)

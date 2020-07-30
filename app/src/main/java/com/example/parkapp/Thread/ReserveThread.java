@@ -31,7 +31,7 @@ public class ReserveThread extends Thread {
         OkHttp http = new OkHttp();
         GsonUtils gsonUtils = new GsonUtils();
         try {
-            Document doc = Jsoup.connect("http://182.92.219.51:8000/reserve"+params).get();
+            Document doc = Jsoup.connect("http://182.92.219.51:8000/"+params).get();
             String body = doc.body().text();
             ReserveBean reserveBean = gsonUtils.parserJsonToReserveData(body);
             name = reserveBean.getName();

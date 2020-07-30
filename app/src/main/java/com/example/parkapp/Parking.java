@@ -28,6 +28,8 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.baidu.mapapi.utils.route.BaiduMapRoutePlan;
+import com.baidu.mapapi.utils.route.RouteParaOption;
 import com.example.parkapp.Bean.MyBookBean;
 import com.example.parkapp.Thread.ReserveThread;
 
@@ -95,7 +97,7 @@ public class Parking extends Activity {
                     overlay.addToMap();
                     Integer travel_time = drivingRouteResult.getRouteLines().get(0).getDuration();
                     TextView travelTime = findViewById(R.id.travelTime);
-                    travelTime.setText(travel_time/60+"minutes");
+                    travelTime.setText(travel_time/60+" minutes");
                 }
             }
 
@@ -139,13 +141,28 @@ public class Parking extends Activity {
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i1 = new Intent();
-                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+myBookBean.parkName+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+
+                LatLng startPoint = new LatLng(myBookBean.currentLatitude, myBookBean.currentLongitude);
+                LatLng endPoint = new LatLng(myBookBean.parkLatitude, myBookBean.parkLongitude);
+                RouteParaOption paraOption = new RouteParaOption()
+                        .startPoint(startPoint)
+                        .endPoint(endPoint);
                 try {
-                    startActivity(i1);
-                }catch (Exception e){
-                    Toast.makeText(Parking.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                    BaiduMapRoutePlan.openBaiduMapDrivingRoute(paraOption, Parking.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(Parking.this,"Please install the Baidu Map for navigation.",Toast.LENGTH_SHORT).show();
                 }
+                BaiduMapRoutePlan.finish(Parking.this);
+
+
+//                Intent i1 = new Intent();
+//                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin="+myBookBean.currentLatitude+","+myBookBean.currentLongitude+"&destination="+"深圳市"+myBookBean.parkName+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+//                try {
+//                    startActivity(i1);
+//                }catch (Exception e){
+//                    Toast.makeText(Parking.this,"Please install the Baidu Map for navigation.",Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
@@ -157,7 +174,7 @@ public class Parking extends Activity {
                 myBookBean.parkName = "";
                 Intent intent = new Intent(Parking.this,MainActivity.class);
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"The cancellation was successful.",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -188,7 +205,7 @@ public class Parking extends Activity {
                     .to(enNode));
             mSearch.destroy();
         }catch (Exception e){
-            Toast.makeText(Parking.this,"无法规划路线",Toast.LENGTH_SHORT);
+            Toast.makeText(Parking.this,"The route cannot be planned.",Toast.LENGTH_SHORT);
         }
     }
     @Override

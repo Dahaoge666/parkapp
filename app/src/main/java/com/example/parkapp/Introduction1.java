@@ -11,7 +11,7 @@ public class Introduction1 extends Activity {
 
     //定义图片
     private int[] resId = new int[]{
-            R.mipmap.tu1, R.mipmap.tu2, R.mipmap.tu3, R.mipmap.tu4, R.mipmap.tu5, R.mipmap.tu6, R.mipmap.tu7, R.mipmap.tu8, R.mipmap.tu9, R.mipmap.tu10
+            R.mipmap.tu1, R.mipmap.tu2, R.mipmap.tu3, R.mipmap.tu4, R.mipmap.tu5, R.mipmap.tu6, R.mipmap.tu7, R.mipmap.tu8, R.mipmap.tu9, R.mipmap.tu10, R.mipmap.tu11
     };
     //图片下标序号
     private int count = 0;
@@ -27,7 +27,7 @@ public class Introduction1 extends Activity {
 
 
         //显示提示语
-        Toast.makeText(Introduction1.this, "温馨提示：向左或向右滑动查看更多操作", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Introduction1.this, "Tip: Swipe left or right to see more.", Toast.LENGTH_SHORT).show();
 
         iv = (ImageView)findViewById(R.id.imageView);        //获取ImageView控件id
         gestureDetector = new GestureDetector(onGestureListener);  //设置手势监听由onGestureListener处理

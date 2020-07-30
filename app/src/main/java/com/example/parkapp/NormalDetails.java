@@ -86,7 +86,7 @@ public class NormalDetails extends AppCompatActivity {
                     overlay.addToMap();
                     Integer travel_time = drivingRouteResult.getRouteLines().get(0).getDuration();
                     TextView parkDistance = findViewById(R.id.parkDistance);
-                    parkDistance.setText(travel_time/60+"minutes");
+                    parkDistance.setText(travel_time/60+" minutes");
                 }
             }
 
@@ -131,7 +131,7 @@ public class NormalDetails extends AppCompatActivity {
                     .to(enNode));
             mSearch.destroy();
         }catch (Exception e){
-            Toast.makeText(NormalDetails.this,"无法规划路线",Toast.LENGTH_SHORT);
+            Toast.makeText(NormalDetails.this,"The route cannot be planned.",Toast.LENGTH_SHORT);
         }
 
 

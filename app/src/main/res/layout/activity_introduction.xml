@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorGreen"
-        android:text="Introduction"
+        android:text="User Guide"
         android:textSize="30sp"
         android:textColor="#000000"
         android:gravity="center" />
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="跳过指南"
+        android:text="Skip"
         android:textSize="30sp"
         android:textColor="#000000"
         android:background="#FFFFFF"/>

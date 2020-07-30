@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorGreen"
-        android:text="Introduction"
+        android:text="User Guide"
         android:textSize="30sp"
         android:textColor="#000000"
         android:gravity="center" />

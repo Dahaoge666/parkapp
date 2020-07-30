@@ -18,7 +18,7 @@ public class NormalThread extends Thread {
     public void run() {
         GsonUtils gsonUtils = new GsonUtils();
         try {
-            Document doc = Jsoup.connect("http://182.92.219.51:8000/normal"+params).get();
+            Document doc = Jsoup.connect("http://182.92.219.51:8000/"+params).get();
             String body = doc.body().text();
             normalBean = gsonUtils.parserJsonToNormalData(body);
         }catch(IOException e) {

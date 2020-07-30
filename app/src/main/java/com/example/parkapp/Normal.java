@@ -35,6 +35,8 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.baidu.mapapi.utils.route.BaiduMapRoutePlan;
+import com.baidu.mapapi.utils.route.RouteParaOption;
 import com.example.parkapp.Bean.MyBookBean;
 import com.example.parkapp.Bean.NormalBean;
 import com.example.parkapp.Thread.NormalThread;
@@ -56,10 +58,7 @@ public class Normal extends Activity {
         final Double historyLatitude = intent.getDoubleExtra("historyLatitude",0);
         final Double historyLongitude = intent.getDoubleExtra("historyLongitude",0);
         final String type=intent.getStringExtra("type");
-
         final MyBookBean myBookBean = new MyBookBean();
-
-
 
         //设置路线规划的监听器
         final RoutePlanSearch mSearch = RoutePlanSearch.newInstance();
@@ -119,7 +118,12 @@ public class Normal extends Activity {
                 .alpha(0.8f);
         mBaiduMap.addOverlay(markOption);
         LatLng currentPoint = new LatLng(myBookBean.currentLatitude, myBookBean.currentLongitude);
-        NormalThread normalThread = new NormalThread("/"+historyLongitude+"/"+historyLatitude+"/"+type);
+        NormalThread normalThread;
+        if(type.equals("normal")){
+            normalThread = new NormalThread("normal/"+historyLongitude+"/"+historyLatitude+"/"+type);}
+        else {
+            normalThread = new NormalThread("changeDisplay");
+        }
         try {
             normalThread.start();
             normalThread.join();
@@ -136,7 +140,7 @@ public class Normal extends Activity {
                     .to(enNode));
             mSearch.destroy();
         }catch (Exception e){
-            Toast.makeText(Normal.this,"无法规划路线",Toast.LENGTH_SHORT);
+            Toast.makeText(Normal.this,"The route cannot be planned.",Toast.LENGTH_SHORT);
         }
 
         myBookBean.parkName = normalBean[0].getName();
@@ -149,15 +153,29 @@ public class Normal extends Activity {
         roadBook1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i1 = new Intent();
-                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin=22.534088,113.919806&destination="+"深圳市"+normalBean[0].getName()+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+                LatLng startPoint = new LatLng(myBookBean.currentLatitude, myBookBean.currentLongitude);
+                LatLng endPoint = new LatLng(Double.valueOf(normalBean[0].getAtitude().split(",")[0]),Double.valueOf(normalBean[0].getAtitude().split(",")[1]));
+                RouteParaOption paraOption = new RouteParaOption()
+                        .startPoint(startPoint)
+                        .endPoint(endPoint);
                 try {
-                    startActivity(i1);
+                    BaiduMapRoutePlan.openBaiduMapDrivingRoute(paraOption, Normal.this);
                     if(type.equals("normal")){
                         initNotify(destination,name,historyLatitude,historyLongitude );}
-                }catch (Exception e){
-                    Toast.makeText(Normal.this,"请安装百度地图",Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(Normal.this,"Please install the Baidu Map for navigation.",Toast.LENGTH_SHORT).show();
                 }
+                BaiduMapRoutePlan.finish(Normal.this);
+//                Intent i1 = new Intent();
+//                i1.setData(Uri.parse("baidumap://map/direction?region=shenzhen&origin="+myBookBean.currentLatitude+","+myBookBean.currentLongitude+"&destination="+"深圳市"+normalBean[0].getName()+"&coord_type=bd09ll&mode=driving&src=andr.baidu.openAPIdemo"));
+//                try {
+//                    startActivity(i1);
+//                    if(type.equals("normal")){
+//                        initNotify(destination,name,historyLatitude,historyLongitude );}
+//                }catch (Exception e){
+//                    Toast.makeText(Normal.this,"Please install the Baidu Map for navigation.",Toast.LENGTH_SHORT).show();
+//                }
             }
         });
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
@@ -166,7 +184,7 @@ public class Normal extends Activity {
                 myBookBean.parkName = "";
                 Intent intent = new Intent(Normal.this,MainActivity.class);
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(),"取消成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"The cancellation was successful.",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -248,13 +266,25 @@ public class Normal extends Activity {
         intent.putExtra("name",historyName);
         intent.putExtra("historyLatitude",historyLatitude);
         intent.putExtra("historyLongitude",historyLongitude);
-        intent.putExtra("type","change");
+        intent.putExtra("type","changeDisplay");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationChannel mChannel = new NotificationChannel(id, "提示", NotificationManager.IMPORTANCE_LOW);
+
+
+
+
+        NormalThread normalThread1 = new NormalThread("normal/"+historyLongitude+"/"+historyLatitude+"/"+"change");
+        try {
+            normalThread1.start();
+            normalThread1.join();
+        } catch (Exception e) {
+            System.out.println("Exception from main");
+        }
+        NormalBean[]  normalBean1 = normalThread1.normalBean;
+        NotificationChannel mChannel = new NotificationChannel(id, "Tips", NotificationManager.IMPORTANCE_LOW);
         notificationManager.createNotificationChannel(mChannel);
         notification = new Notification.Builder(this, "default")
                 .setChannelId(id)
-                .setContentTitle("Better parking spot is detected")
+                .setContentTitle("Better parking spot is detected:"+normalBean1[0].getName())
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.hongyan)
